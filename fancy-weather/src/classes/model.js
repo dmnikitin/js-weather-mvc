@@ -1,6 +1,8 @@
 import {
-  getContentData,
-  getImage,
+  getWeatherURL,
+  getImageURL,
+  getCoordsURL,
+  getData,
 } from '../helpers/fetch';
 
 export default class Model {
@@ -36,7 +38,8 @@ export default class Model {
   }
 
   async loadData(latitude, longitude) {
-    const result = await getContentData(latitude, longitude);
+    const url = getWeatherURL(latitude, longitude);
+    const result = await getData(url);
     this.loadedData = result;
     return this.loadedData;
   }
