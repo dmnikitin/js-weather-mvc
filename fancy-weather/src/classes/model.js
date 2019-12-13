@@ -5,21 +5,26 @@ import {
   getData,
 } from '../helpers/fetch';
 
+import {
+  languages,
+  temperatureValues,
+} from '../assets/data';
+
 export default class Model {
   constructor() {
     this.loadedData = {};
-    this.lang = true;
-    this.temperature = true;
+    this.language = languages.eng;
+    this.temperature = temperatureValues.celcius;
   }
 
   // getCityFromLatLong(latitiude, longitude){}
 
-  setLang() {
-    this.lang = !this.lang;
+  setLanguage(language) {
+    this.language = language;
   }
 
-  setTemperature() {
-    this.temperature = !this.temperature;
+  setTemperature(temperature) {
+    this.temperature = temperature;
   }
 
   changeTheme() {

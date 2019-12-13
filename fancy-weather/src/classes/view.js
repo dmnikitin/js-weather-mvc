@@ -7,6 +7,11 @@ import {
   getElement,
 } from '../helpers/other';
 
+import {
+  languages,
+  temperatureValues,
+} from '../assets/data';
+
 const textData = {
   controlPanel: {},
   weatherDayPanel: {},
@@ -14,19 +19,15 @@ const textData = {
   geoPanel: {},
 };
 
-
 export default class View {
   constructor() {
-    // this.controlPanel = new ControlPanel();
+    this.controlPanel = new ControlPanel();
     this.weatherDayPanel = new WeatherDayPanel();
-    // this.weatherWeekPanel = new WeatherWeekPanel();
+    this.weatherWeekPanel = new WeatherWeekPanel();
     // this.geoPanel = new GeoPanel();
-    const [container, navbar, mainbox] = createElements({
+    const [container, mainbox] = createElements({
       element: 'main',
       classes: 'container',
-    }, {
-      element: 'div',
-      classes: 'navbar',
     }, {
       element: 'div',
       classes: 'mainbox',
@@ -34,23 +35,44 @@ export default class View {
 
     this.app = getElement('#root');
     this.container = container;
-    this.navbar = navbar;
+
     this.mainbox = mainbox;
     // <div class="data-loading"><i class='fa fa-refresh fa-spin'></i></div>
-    this.mainbox.append(this.weatherDayPanel.container);
+    this.mainbox.append(this.weatherDayPanel.container, this.weatherWeekPanel.container);
     // this.mainbox.append(this.controlPanel.container, this.weatherDayPanel.container, this.weatherWeekPanel.container, this.geoPanel.container);
-    this.container.append(this.navbar, this.mainbox);
+    this.container.append(this.controlPanel.container, this.mainbox);
     this.app.append(this.container);
-
-    // const skycons = new Skycons({
-    //   color: 'white'
-    // });
   }
 
 
   displayData(data, language, temperature, theme) {
+    console.log('TCL: View -> displayData -> language', language);
     // const theme = getImage(`weather ${Object.entries(this.loadedData).length === 0 ? this.loadedData.currently.summary : ''}`);
+    // this.controlPanel.displayData(language, temperature, theme)
 
-    this.weatherDayPanel.displayData(data);
+    // Object.assign(this, {
+    //   data,
+    //   language,
+    //   temperature,
+    //   theme,
+    // });
+
+    this.weatherDayPanel.displayData(data, language, temperature, theme);
+    this.weatherWeekPanel.displayData(data);
+    this.controlPanel.languageButton.display(language);
+  }
+
+  bindTemperature(handler) {
+    this.controlPanel.temperatureButton.container.addEventListener('click', (event) => {
+      const temperature = event.target.checked ? temperatureValues.celsius : temperatureValues.fahrenheit;
+      handler(temperature);
+    });
+  }
+
+  bindLanguage(handler) {
+    this.controlPanel.languageButton.container.addEventListener('click', (event) => {
+      const language = event.target.textContent;
+      handler(language);
+    });
   }
 }
