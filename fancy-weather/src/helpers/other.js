@@ -4,6 +4,15 @@ import {
   dayParts,
 } from '../assets/data';
 
+const getInitialCoordinates = () => new Promise((resolve, reject) => {
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0,
+    };
+    navigator.geolocation.getCurrentPosition(resolve, reject, options);
+  });
+
 const getElement = (selector) => {
   const element = document.querySelector(selector);
   return element;
@@ -33,6 +42,13 @@ const formatDate = (time, language) => {
   return `${monthArray[month]}, ${day}, ${weekDay}`;
 };
 
+const getCurrentTime = (time) => {
+  const dt = new Date(time * 1000);
+  const hours = dt.getHours();
+  const minutes = dt.getMinutes();
+  return `${hours}:${minutes}`;
+};
+
 const getProperImageQuery = (time, weather) => {
   const dt = new Date(time * 1000);
   const month = dt.getMonth();
@@ -41,10 +57,12 @@ const getProperImageQuery = (time, weather) => {
 };
 
 export {
+  getInitialCoordinates,
   getElement,
   createElements,
   setAttributes,
   toCelcius,
   formatDate,
+  getCurrentTime,
   getProperImageQuery,
 };

@@ -53,6 +53,10 @@ export default class Picker {
       element: 'button',
       classes: 'select-button',
     });
+    language0.textContent = 'en';
+    language0.classList.toggle('button-focus');
+    language1.textContent = 'ru';
+    language2.textContent = 'be';
     Object.assign(this, {
       container,
       language0,

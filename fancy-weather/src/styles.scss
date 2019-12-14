@@ -34,6 +34,7 @@ body {
   padding: 25px;
   background-color: rgba(63, 69, 81, 0.6);
   grid-template-rows: 1fr 1fr 1fr;
+  background-size: 'auto auto';
 }
 
 
@@ -75,15 +76,15 @@ body {
   font-size: 16px;
 
   &__button {
-    flex-grow: 1;
-    width: auto;
-    max-width: 100px;
+    width: 50px;
+    height: 35px;
+    border-radius: 10px;
+    background: white;
     border: 1px solid;
+    font-size: 12px;
   }
 
-  &__input {
-    width: 40%;
-  }
+
 
 }
 
@@ -105,6 +106,10 @@ body {
   }
 }
 
+.map-container {
+  display: grid;
+  grid-template-columns: 80% 20%;
+}
 
 .onoffswitch {
   position: relative;
@@ -149,14 +154,14 @@ body {
 }
 
 .onoffswitch-inner:before {
-  content: "Celcius";
+  content: "C";
   padding-left: 6px;
   background-color: #34A7C1;
   color: #FFFFFF;
 }
 
 .onoffswitch-inner:after {
-  content: "Fahrenheit";
+  content: "F";
   padding-right: 6px;
   background-color: #EEEEEE;
   color: #999999;
@@ -186,80 +191,54 @@ body {
 }
 
 
+.query-form {
+  &__text {
+    border: 1px solid;
+    border-radius: 10px;
+
+  }
+
+  &__submit {
+    border: none;
+    background: transparent;
+    position: relative;
+    right: 30px;
+    top: 7px;
+    height: 30px;
+    width: 30px;
+  }
+}
+
 
 .select {
   cursor: pointer;
   position: relative;
-  margin: 50px auto;
-  width: 100px;
-  color: #999;
+  height: 32px;
+  width: 110px;
+
   position: relative;
   font-size: 20px;
   text-transform: uppercase;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border: 1px solid black;
+  border-radius: 12px;
 
+
+  &-button {
+    border-color: transparent;
+    background-color: inherit;
+
+    &:first-child {
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
+
+
+  }
 }
 
-.select:hover .select-options {
-  display: block;
-}
 
-.select-options {
-  position: absolute;
-  width: 100%;
-  z-index: 9;
-  top: 0;
-  left: 0;
-  padding-top: 44px;
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
-  display: none;
-}
-
-.select-options ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.select-options ul li {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-}
-
-.select-list {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: 10px 15px;
-  padding-right: 30px;
-}
-
-.select-list:hover {
-  background-color: cadetblue;
-  color: white;
-}
-
-.select-current .select-list:after {
-  content: "\f0d8";
-  font-family: "Fontawesome";
-  position: absolute;
-  right: 10px;
-  transform: rotate(180deg);
-}
-
-.select-current:hover .select-list:after {
-  transform: rotate(0);
-}
-
-.select-current {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 10;
-  position: relative;
-}
-
-.flag {
-  zoom: .2;
+.button-focus {
+  background: #999;
 }

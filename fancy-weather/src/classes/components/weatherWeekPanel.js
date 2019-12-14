@@ -65,7 +65,8 @@ export default class WeatherWeekPanel {
     // });
   }
 
-  displayData(json, language, temperatureSystem, theme) {
+  displayData(json, language, temperatureSystem) {
+    console.log('TCL: WeatherWeekPanel -> displayData -> language', language);
     const {
       timezone,
       daily: {

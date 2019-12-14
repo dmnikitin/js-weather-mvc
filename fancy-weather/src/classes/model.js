@@ -14,7 +14,7 @@ import {
 export default class Model {
   constructor() {
     this.loadedData = {};
-    this.language = languages.eng;
+    this.language = languages.en;
     this.temperature = temperatureValues.celsius;
     this.theme = null;
     this.setLanguage = this.setLanguage.bind(this);
@@ -54,15 +54,22 @@ export default class Model {
     }
   }
 
-  async getPlaceFromCoords(latitude, longitude) {
-    const url = getPlaceURL(latitude, longitude, this.language);
+  async getPlaceFromCoords(latitude, longitude, language) {
+    const url = getPlaceURL(latitude, longitude, language);
+    console.log('TCL: Model -> getPlaceFromCoords -> url', url);
     try {
       const data = await getData(url);
+      console.log('TCL: Model -> getPlaceFromCoords -> data', data);
       const {
         city,
         country,
       } = data.results[0].components;
-      return `${city} ${country}`;
+      this.position = {
+        latitude,
+        longitude,
+      };
+      this.place = `${city}, ${country}`;
+      return this.place;
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
@@ -83,6 +90,7 @@ export default class Model {
     const url = getWeatherURL(latitude, longitude);
     try {
       const result = await getData(url);
+      // const place = await this.getPlaceFromCoords();
       this.loadedData = result;
       return this.loadedData;
     } catch (err) {

@@ -4,6 +4,7 @@ import {
   setAttributes,
   toCelcius,
   formatDate,
+  getCurrentTime,
 } from '../../helpers/other';
 
 import {
@@ -13,7 +14,7 @@ import {
 
 export default class WeatherDayPanel {
   constructor() {
-    const [container, canvas, textWrapper, timeZone, currentTime, summary] = createElements({
+    const [container, canvas, textWrapper, place, currentTime, currentDay, summary] = createElements({
       element: 'section',
       classes: 'day-container',
     }, {
@@ -22,6 +23,9 @@ export default class WeatherDayPanel {
     }, {
       element: 'article',
       classes: 'day-container__text-wrapper',
+    }, {
+      element: 'h3',
+      classes: 'day-container__text-instance',
     }, {
       element: 'h3',
       classes: 'day-container__text-instance',
@@ -41,15 +45,16 @@ export default class WeatherDayPanel {
       container,
       canvas,
       textWrapper,
-      timeZone,
+      place,
       currentTime,
+      currentDay,
       summary,
     });
-    this.textWrapper.append(this.timeZone, this.currentTime, this.summary);
+    this.textWrapper.append(this.place, this.currentTime, this.currentDay, this.summary);
     this.container.append(this.canvas, this.textWrapper);
   }
 
-  displayData(json, language, temperatureSystem) {
+  displayData(json, language, temperatureSystem, place) {
     const {
       timezone,
       currently: {
@@ -66,9 +71,11 @@ export default class WeatherDayPanel {
 
     const translatedWeather = translations.weather[language];
     const temperatureString = temperatureSystem === temperatureValues.celsius ? `${toCelcius(temperature).toFixed(0)} °C` : `${temperature} °F`;
-    this.timeZone.textContent = timezone;
-    this.currentTime.textContent = formatDate(time, language);
-    this.summary.textContent = `${translatedWeather[translations.weather.eng.indexOf(icon)]}, ${temperatureString}`;
+
+    this.place.textContent = place;
+    this.currentTime.textContent = getCurrentTime(time);
+    this.currentDay.textContent = formatDate(time, language);
+    this.summary.textContent = `${translatedWeather[translations.weather.en.indexOf(icon)]}, ${temperatureString}`;
     skycons.add('mainWeatherIcon', icon);
     skycons.play();
   }

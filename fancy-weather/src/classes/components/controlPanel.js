@@ -41,10 +41,17 @@ export default class ControlPanel {
     setAttributes(this.queryForm.text, {
       placeholder: translations.layout.city[language],
     });
-    const otherLanguages = Object.keys(languages).filter((lang) => lang !== language);
-    this.languageButton.language0.textContent = language;
-    otherLanguages.forEach((lang, index) => {
-      this.languageButton[`language${index + 1}`].textContent = lang;
+    [...this.languageButton.container.children].forEach((button) => {
+      button.classList.remove('button-focus');
+      if (button.textContent === language) {
+        button.classList.add('button-focus');
+      }
     });
+
+    // const otherLanguages = Object.keys(languages).filter((lang) => lang !== language);
+    // this.languageButton.language0.textContent = language;
+    // otherLanguages.forEach((lang, index) => {
+    //   this.languageButton[`language${index + 1}`].textContent = lang;
+    // });
   }
 }

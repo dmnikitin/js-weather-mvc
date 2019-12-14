@@ -5,32 +5,36 @@ import {
 
 export default class QueryForm {
   constructor() {
-    const [container, text, submit] = createElements({
+    const [container, text, button, icon] = createElements({
       element: 'form',
       classes: 'query-form',
     }, {
       element: 'input',
       classes: 'query-form__text',
     }, {
-      element: 'input',
+      element: 'button',
       classes: 'query-form__submit',
+    }, {
+      element: 'i',
+      classes: 'material-icons',
     });
 
     setAttributes(text, {
       type: 'text',
       name: 'city',
     });
-    setAttributes(submit, {
-      type: 'button',
-      value: 'enter',
-    });
+
+    icon.textContent = 'search';
+
+
+    button.append(icon);
 
     Object.assign(this, {
       container,
       text,
-      submit,
+      button,
     });
 
-    this.container.append(this.text, this.submit);
+    this.container.append(this.text, this.button);
   }
 }
