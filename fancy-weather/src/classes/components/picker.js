@@ -1,11 +1,6 @@
 import {
   createElements,
-  setAttributes,
 } from '../../helpers/other';
-
-import {
-  languages,
-} from '../../assets/data';
 
 export default class Picker {
   constructor() {
@@ -65,13 +60,5 @@ export default class Picker {
       language2,
     });
     this.container.append(language0, language1, language2);
-  }
-
-  display(language) {
-    const otherLanguages = Object.keys(languages).filter((lang) => lang !== language);
-    this.language0.textContent = language;
-    otherLanguages.forEach((lang, index) => {
-      this[`language${index + 1}`].textContent = lang;
-    });
   }
 }

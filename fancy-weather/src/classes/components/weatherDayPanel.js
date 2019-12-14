@@ -7,7 +7,6 @@ import {
 } from '../../helpers/other';
 
 import {
-  languages,
   temperatureValues,
   translations,
 } from '../../assets/data';
@@ -35,8 +34,8 @@ export default class WeatherDayPanel {
     });
     setAttributes(canvas, {
       id: 'mainWeatherIcon',
-      height: 300,
-      width: 300,
+      height: 200,
+      width: 200,
     });
     Object.assign(this, {
       container,
@@ -46,18 +45,13 @@ export default class WeatherDayPanel {
       currentTime,
       summary,
     });
-
-
     this.textWrapper.append(this.timeZone, this.currentTime, this.summary);
     this.container.append(this.canvas, this.textWrapper);
   }
 
-  displayData(json, language, temperatureSystem, theme) {
+  displayData(json, language, temperatureSystem) {
     const {
       timezone,
-      daily: {
-        data,
-      },
       currently: {
         time,
         summary,
@@ -70,12 +64,10 @@ export default class WeatherDayPanel {
       color: 'white',
     });
 
-    this.timeZone.textContent = timezone;
-
     const translatedWeather = translations.weather[language];
-
-    this.currentTime.textContent = formatDate(time, language);
     const temperatureString = temperatureSystem === temperatureValues.celsius ? `${toCelcius(temperature).toFixed(0)} °C` : `${temperature} °F`;
+    this.timeZone.textContent = timezone;
+    this.currentTime.textContent = formatDate(time, language);
     this.summary.textContent = `${translatedWeather[translations.weather.eng.indexOf(icon)]}, ${temperatureString}`;
     skycons.add('mainWeatherIcon', icon);
     skycons.play();

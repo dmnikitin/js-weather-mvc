@@ -6,6 +6,9 @@ import {
   formatDate,
 } from '../../helpers/other';
 
+import {
+  temperatureValues,
+} from '../../assets/data';
 
 export default class WeatherWeekPanel {
   constructor() {
@@ -62,7 +65,7 @@ export default class WeatherWeekPanel {
     // });
   }
 
-  displayData(json) {
+  displayData(json, language, temperatureSystem, theme) {
     const {
       timezone,
       daily: {
@@ -81,13 +84,20 @@ export default class WeatherWeekPanel {
     });
 
 
-    console.log(this.container);
     [...this.container.children].forEach((element) => {
       const canvas = element.querySelector('.weekday-container__canvas');
 
       const value = canvas.getAttribute('data');
 
-      skycons.add(`${canvas.getAttribute('id')}`, json.daily.data[value].icon);
+
+      const day = element.querySelectorAll('.weekday-container__text-instance')[0];
+      const dayTemperature = element.querySelectorAll('.weekday-container__text-instance')[1];
+      const a = json.daily.data[value];
+      const average = (a.temperatureHigh + a.temperatureLow) / 2;
+      const temperatureString = temperatureSystem === temperatureValues.celsius ? `${toCelcius(average).toFixed(0)} °C` : `${average} °F`;
+      day.textContent = formatDate(a.time, language);
+      dayTemperature.textContent = temperatureString;
+      skycons.add(`${canvas.getAttribute('id')}`, a.icon);
     });
     skycons.play();
     // setTimeout(() => skycons.add(`icon${i}`, e.icon), 1000);

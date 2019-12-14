@@ -55,11 +55,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'src/index.html',
     }),
-    new CopyWebpackPlugin([{
-      from: 'src/assets',
-      to: 'assets',
-      ignore: 'index.html',
-    }]),
+    // new CopyWebpackPlugin([{
+    //   from: 'src/assets',
+    //   to: 'assets',
+    //   ignore: 'index.html',
+    // }]),
     new MiniCssExtractPlugin({
       filename: 'bundle.css',
 

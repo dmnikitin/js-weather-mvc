@@ -1,5 +1,7 @@
 import {
   translations,
+  seasons,
+  dayParts,
 } from '../assets/data';
 
 const getElement = (selector) => {
@@ -22,13 +24,20 @@ const setAttributes = (el, attrs) => {
 };
 
 const toCelcius = (val) => (val - 32) * 5 / 9;
-const formatDate = (t, language) => {
-  const dt = new Date(t * 1000);
+const formatDate = (time, language) => {
+  const dt = new Date(time * 1000);
   const day = dt.getDate();
   const month = dt.getMonth();
   const weekDay = translations.weekday[language][dt.getUTCDay()];
   const monthArray = translations.month[language];
   return `${monthArray[month]}, ${day}, ${weekDay}`;
+};
+
+const getProperImageQuery = (time, weather) => {
+  const dt = new Date(time * 1000);
+  const month = dt.getMonth();
+  const hour = dt.getHours();
+  return `${weather} ${dayParts[Math.floor(hour / 6)]} ${seasons[month]}`;
 };
 
 export {
@@ -37,4 +46,5 @@ export {
   setAttributes,
   toCelcius,
   formatDate,
+  getProperImageQuery,
 };

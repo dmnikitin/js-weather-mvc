@@ -46,7 +46,6 @@ export default class View {
 
 
   displayData(data, language, temperature, theme) {
-    console.log('TCL: View -> displayData -> language', language);
     // const theme = getImage(`weather ${Object.entries(this.loadedData).length === 0 ? this.loadedData.currently.summary : ''}`);
     // this.controlPanel.displayData(language, temperature, theme)
 
@@ -56,10 +55,14 @@ export default class View {
     //   temperature,
     //   theme,
     // });
+    // rgba(63, 69, 81, 0.6)
+    // rgba(255,255,255,.5)
 
+    this.mainbox.style.backgroundImage = ` linear-gradient(rgba(63, 69, 81, 0.6), rgba(63, 69, 81, 0.6)), url(${theme})`;
+    this.mainbox.style.backgroundSize = 'auto 100%';
     this.weatherDayPanel.displayData(data, language, temperature, theme);
-    this.weatherWeekPanel.displayData(data);
-    this.controlPanel.languageButton.display(language);
+    this.weatherWeekPanel.displayData(data, language, temperature, theme);
+    this.controlPanel.display(language);
   }
 
   bindTemperature(handler) {
@@ -73,6 +76,21 @@ export default class View {
     this.controlPanel.languageButton.container.addEventListener('click', (event) => {
       const language = event.target.textContent;
       handler(language);
+    });
+  }
+
+  bindTheme(handler) {
+    this.controlPanel.themeButton.addEventListener('click', () => {
+      handler();
+    });
+  }
+
+  bindQuery(handler) {
+    this.controlPanel.queryForm.submit.addEventListener('submit', (event) => {
+      console.log('pidr');
+      event.preventDefault();
+      console.log('TCL: View -> bindQuery -> event', event);
+      handler(event.target.value);
     });
   }
 }

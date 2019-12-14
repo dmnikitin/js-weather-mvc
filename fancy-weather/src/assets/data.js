@@ -37,10 +37,28 @@ const translations = {
     by: ['Ясна', 'Ясная ноч', 'Дзень, частковая воблачнасць', 'Ноч, частковая воблачнасць', 'Воблачна ', 'Дождж', 'Дождж са снегам', 'Снег', 'Моцны вецер', 'Туман'],
   },
 };
+const seasons = {
+  0: 'winter',
+  1: 'winter',
+  2: 'spring',
+  3: 'spring',
+  4: 'spring',
+  5: 'summer',
+  6: 'summer',
+  7: 'summer',
+  8: 'fall',
+  9: 'fall',
+  10: 'fall',
+  11: 'winter',
+};
+
+const dayParts = ['night', 'morning', 'day', 'evening'];
 
 
 export {
   temperatureValues,
   languages,
   translations,
+  seasons,
+  dayParts,
 };
