@@ -73,7 +73,7 @@ export default class WeatherDayPanel {
     const temperatureString = temperatureSystem === temperatureValues.celsius ? `${toCelcius(temperature).toFixed(0)} °C` : `${temperature} °F`;
 
     this.place.textContent = place;
-    this.currentTime.textContent = getCurrentTime(time);
+    this.currentTime.textContent = getCurrentTime(timezone);
     this.currentDay.textContent = formatDate(time, language);
     this.summary.textContent = `${translatedWeather[translations.weather.en.indexOf(icon)]}, ${temperatureString}`;
     skycons.add('mainWeatherIcon', icon);

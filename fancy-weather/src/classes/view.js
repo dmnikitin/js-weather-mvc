@@ -29,16 +29,16 @@ export default class View {
     this.container = container;
 
     this.mainbox = mainbox;
-    // <div class="data-loading"><i class='fa fa-refresh fa-spin'></i></div>
-    this.mainbox.append(this.weatherDayPanel.container, this.weatherWeekPanel.container, this.geoPanel.container);
-    this.container.append(this.controlPanel.container, this.mainbox);
-    this.app.append(this.container);
   }
 
 
   displayData(data, language, temperature, theme, place) {
     // rgba(63, 69, 81, 0.6)
     // rgba(255,255,255,.5)
+
+    this.mainbox.append(this.weatherDayPanel.container, this.weatherWeekPanel.container, this.geoPanel.container);
+    this.container.append(this.controlPanel.container, this.mainbox);
+    this.app.append(this.container);
 
     this.mainbox.style.backgroundImage = `linear-gradient(rgba(63, 69, 81, 0.6), rgba(63, 69, 81, 0.6)), url(${theme})`;
     this.weatherDayPanel.displayData(data, language, temperature, place);

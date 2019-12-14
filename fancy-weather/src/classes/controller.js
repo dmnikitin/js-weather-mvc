@@ -20,20 +20,22 @@ export default class Controller {
     this.view.bindTheme(this.handleTheme);
     this.view.bindQuery(this.getData);
     this.getInitialData();
+    setInterval(() => this.getData(this.model.place), 60000);
   }
 
 
   async getInitialData() {
     try {
+      this.view.mainbox.innerHTML = '<div class="data-loading"><i class=\'fa fa-refresh fa-spin\'></i></div>';
       const position = await getInitialCoordinates();
-      console.log('TCL: Controller -> getInitialData -> position', position);
-      const result = await this.model.loadData(position.coords.latitude, position.coords.longitude);
-      console.log('TCL: Controller -> getInitialData -> result', result);
+      const {
+        latitude,
+        longitude,
+      } = position.coords;
+      const result = await this.model.loadData(latitude, longitude);
       const imageQuery = getProperImageQuery(result.currently.time, result.currently.icon);
-      console.log(position.coords.latitude, position.coords.longitude);
-
       await this.model.setTheme(imageQuery);
-      await this.model.getPlaceFromCoords(position.coords.latitude, position.coords.longitude, languages.en);
+      await this.model.getPlaceFromCoords(latitude, longitude, languages.en);
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
@@ -42,25 +44,20 @@ export default class Controller {
       theme,
       place,
     } = this.model;
+    this.view.mainbox.innerHTML = '';
     this.view.displayData(loadedData, languages.en, temperatureValues.celsius, theme, place);
   }
 
   async getData(requiredPlace) {
-    console.log('TCL: Controller -> getData -> place', requiredPlace);
-
+    this.view.mainbox.innerHTML = '<div class="data-loading"><i class=\'fa fa-refresh fa-spin\'></i></div>';
     let {
       position,
     } = this.model;
     try {
       if (requiredPlace) {
         position = await this.model.getCoordsFromPlace(requiredPlace);
-        console.log('TCL: Controller -> getData -> position', position);
       }
-      console.log('TCL: Controller -> getData -> position', position);
       const result = await this.model.loadData(position.coords.latitude, position.coords.longitude);
-      console.log('TCL: Controller -> getData -> result', result);
-      // place = await this.model.getPlaceFromCoords(position.coords.latitude, position.coords.longitude)
-
       const imageQuery = getProperImageQuery(result.currently.time, result.currently.icon);
       await this.model.setTheme(imageQuery);
     } catch (err) {
@@ -73,13 +70,12 @@ export default class Controller {
       theme,
       place,
     } = this.model;
-    console.log('TCL: Controller -> getData -> place', place);
-
     try {
       this.model.place = await this.model.getPlaceFromCoords(position.coords.latitude, position.coords.longitude, language);
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
+    this.view.mainbox.innerHTML = '';
     this.view.displayData(loadedData, language, temperature, theme, place);
   }
 
@@ -101,11 +97,13 @@ export default class Controller {
       loadedData,
       temperature,
       theme,
-      position,
+      position: {
+        latitude,
+        longitude,
+      },
     } = this.model;
     setLanguage(language);
-
-    const place = await this.model.getPlaceFromCoords(position.latitude, position.longitude, language);
+    const place = await this.model.getPlaceFromCoords(latitude, longitude, language);
     this.view.displayData(loadedData, language, temperature, theme, place);
   }
 

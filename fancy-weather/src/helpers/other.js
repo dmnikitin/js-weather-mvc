@@ -5,13 +5,13 @@ import {
 } from '../assets/data';
 
 const getInitialCoordinates = () => new Promise((resolve, reject) => {
-    const options = {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0,
-    };
-    navigator.geolocation.getCurrentPosition(resolve, reject, options);
-  });
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0,
+  };
+  navigator.geolocation.getCurrentPosition(resolve, reject, options);
+});
 
 const getElement = (selector) => {
   const element = document.querySelector(selector);
@@ -42,11 +42,12 @@ const formatDate = (time, language) => {
   return `${monthArray[month]}, ${day}, ${weekDay}`;
 };
 
-const getCurrentTime = (time) => {
-  const dt = new Date(time * 1000);
-  const hours = dt.getHours();
-  const minutes = dt.getMinutes();
-  return `${hours}:${minutes}`;
+const getCurrentTime = (timeZone) => {
+  const dt = new Date().toLocaleString('en-GB', {
+    timeZone,
+  });
+  const time = dt.split(' ')[1];
+  return time.substring(0, time.length - 3);
 };
 
 const getProperImageQuery = (time, weather) => {
