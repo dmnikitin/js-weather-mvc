@@ -11,6 +11,10 @@ import {
   temperatureValues,
 } from '../assets/data';
 
+import {
+  saveToLocalStorage,
+} from '../helpers/localstorage';
+
 export default class Model {
   constructor() {
     this.loadedData = {};
@@ -23,13 +27,20 @@ export default class Model {
     this.getPlaceFromCoords = this.getPlaceFromCoords.bind(this);
   }
 
-
   setLanguage(language) {
     this.language = language;
+    saveToLocalStorage({
+      language,
+      temperature: this.temperature,
+    });
   }
 
   setTemperature(temperature) {
     this.temperature = temperature;
+    saveToLocalStorage({
+      temperature,
+      language: this.language,
+    });
   }
 
   async getCoordsFromPlace(place) {
@@ -56,10 +67,8 @@ export default class Model {
 
   async getPlaceFromCoords(latitude, longitude, language) {
     const url = getPlaceURL(latitude, longitude, language);
-    console.log('TCL: Model -> getPlaceFromCoords -> url', url);
     try {
       const data = await getData(url);
-      console.log('TCL: Model -> getPlaceFromCoords -> data', data);
       const {
         city,
         country,
@@ -90,7 +99,6 @@ export default class Model {
     const url = getWeatherURL(latitude, longitude);
     try {
       const result = await getData(url);
-      // const place = await this.getPlaceFromCoords();
       this.loadedData = result;
       return this.loadedData;
     } catch (err) {

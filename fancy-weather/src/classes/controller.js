@@ -1,11 +1,12 @@
 import {
-  languages,
-  temperatureValues,
-} from '../assets/data';
-import {
+  createElements,
+  setAttributes,
   getProperImageQuery,
   getInitialCoordinates,
 } from '../helpers/other';
+import {
+  getFromLocalStorage,
+} from '../helpers/localstorage';
 
 export default class Controller {
   constructor(model, view) {
@@ -21,21 +22,38 @@ export default class Controller {
     this.view.bindQuery(this.getData);
     this.getInitialData();
     // setInterval(() => this.getData(this.model.place), 60000);
+    this.voiceSearch();
+
+    // const [reload] = createElements({
+    //   element: 'i',
+    //   classes: 'material-icons',
+    // });
+    // reload.classList.add('rotate');
+    // reload.textContent = 'loop';
+    // this.reload = reload;
   }
 
 
   async getInitialData() {
+    const {
+      temperature,
+      language,
+    } = getFromLocalStorage();
+    this.view.mainbox.innerHTML = '<i class="material-icons rotate">loop</i>';
     try {
-      this.view.mainbox.innerHTML = '<div class="data-loading"><i class=\'fa fa-refresh fa-spin\'></i></div>';
       const position = await getInitialCoordinates();
       const {
         latitude,
         longitude,
       } = position.coords;
       const result = await this.model.loadData(latitude, longitude);
-      const imageQuery = getProperImageQuery(result.currently.time, result.currently.icon);
+      const {
+        time,
+        icon,
+      } = result.currently;
+      const imageQuery = getProperImageQuery(time, icon);
       await this.model.setTheme(imageQuery);
-      await this.model.getPlaceFromCoords(latitude, longitude, languages.en);
+      await this.model.getPlaceFromCoords(latitude, longitude, language);
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
@@ -44,12 +62,14 @@ export default class Controller {
       theme,
       place,
     } = this.model;
+
     this.view.mainbox.innerHTML = '';
-    this.view.displayData(loadedData, languages.en, temperatureValues.celsius, theme, place);
+    this.view.displayData(loadedData, language, temperature, theme, place);
   }
 
   async getData(requiredPlace) {
     this.view.mainbox.innerHTML = '<i class="material-icons rotate">loop</i>';
+
     let {
       position,
     } = this.model;
@@ -127,5 +147,31 @@ export default class Controller {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
     this.view.displayData(loadedData, language, temperature, this.model.theme, place);
+  }
+
+  voiceSearch() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.interimResults = true;
+    recognition.maxAlternatives = 1;
+    const {
+      mic,
+      text,
+    } = this.view.controlPanel.queryForm;
+    mic.addEventListener('click', () => {
+      recognition.lang = this.model.language;
+      recognition.start();
+    });
+    recognition.addEventListener('result', (e) => {
+      const last = e.results.length - 1;
+      const string = e.results[last][0].transcript;
+      text.value = string;
+    });
+    recognition.addEventListener('speechend', () => {
+      recognition.stop();
+    });
+    recognition.addEventListener('error', (e) => {
+      throw new Error(`ERROR(${error.code}): ${error.message}`);
+    });
   }
 }

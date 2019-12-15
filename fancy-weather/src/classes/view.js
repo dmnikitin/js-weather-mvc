@@ -24,32 +24,31 @@ export default class View {
       element: 'div',
       classes: 'mainbox',
     });
-
     this.app = getElement('#root');
     this.container = container;
-
     this.mainbox = mainbox;
   }
 
-
   displayData(data, language, temperature, theme, place) {
-    // rgba(63, 69, 81, 0.6)
-    // rgba(255,255,255,.5)
-
     this.mainbox.append(this.weatherDayPanel.container, this.weatherWeekPanel.container, this.geoPanel.container);
     this.container.append(this.controlPanel.container, this.mainbox);
     this.app.append(this.container);
-
     this.mainbox.style.backgroundImage = `linear-gradient(rgba(63, 69, 81, 0.6), rgba(63, 69, 81, 0.6)), url(${theme})`;
     this.weatherDayPanel.displayData(data, language, temperature, place);
     this.weatherWeekPanel.displayData(data, language, temperature);
-    this.controlPanel.display(language);
+    this.controlPanel.display(language, temperature);
     this.geoPanel.display(data.latitude, data.longitude, language);
   }
 
   bindTemperature(handler) {
     this.controlPanel.temperatureButton.container.addEventListener('click', (event) => {
-      const temperature = event.target.checked ? temperatureValues.celsius : temperatureValues.fahrenheit;
+      const {
+        celsius,
+        fahrenheit,
+      } = temperatureValues;
+      console.log('view bind checked', event.target.checked);
+      const temperature = event.target.checked ? celsius : fahrenheit;
+      console.log('TCL: View -> bindTemperature -> temperature', temperature);
       handler(temperature);
     });
   }

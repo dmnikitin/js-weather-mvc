@@ -5,7 +5,7 @@ import {
 
 import {
   translations,
-  languages,
+  temperatureValues,
 } from '../../assets/data';
 
 import Switch from './switch';
@@ -36,8 +36,13 @@ export default class ControlPanel {
     this.container.append(this.queryForm.container, this.temperatureButton.container, this.themeButton, this.languageButton.container);
   }
 
-  display(language) {
+  display(language, temperature) {
     this.themeButton.textContent = translations.layout.theme[language];
+    if (temperature === temperatureValues.celsius) {
+      this.temperatureButton.input.checked = true;
+    } else {
+      this.temperatureButton.input.checked = false;
+    }
     setAttributes(this.queryForm.text, {
       placeholder: translations.layout.city[language],
     });
@@ -47,11 +52,5 @@ export default class ControlPanel {
         button.classList.add('button-focus');
       }
     });
-
-    // const otherLanguages = Object.keys(languages).filter((lang) => lang !== language);
-    // this.languageButton.language0.textContent = language;
-    // otherLanguages.forEach((lang, index) => {
-    //   this.languageButton[`language${index + 1}`].textContent = lang;
-    // });
   }
 }
