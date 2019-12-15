@@ -8,6 +8,11 @@ const languages = {
   be: 'be',
 };
 
+const formatWeekDays = {
+  fullName: 'full',
+  shortName: 'short',
+};
+
 const translations = {
   layout: {
     theme: {
@@ -32,11 +37,40 @@ const translations = {
         be: 'даўгата',
       },
     },
+    weather: {
+      humidity: {
+        en: 'humidity',
+        ru: 'влажность',
+        be: 'вiльготнасць',
+      },
+      windSpeed: {
+        en: 'wind speed',
+        ru: 'скорость ветра',
+        be: 'хуткасць ветра',
+      },
+      apparent: {
+        en: 'apparent temperature',
+        ru: 'ощущается как',
+        be: 'адчуваецца як',
+      },
+    },
+    inputError: {
+      en: 'please input existing place',
+      ru: 'введите корректное название населенного пункта',
+      be: 'увядзіце карэктны населен пункт',
+    },
   },
   weekday: {
-    en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-    ru: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
-    be: ['Нядзеля', 'Панядзелак', 'Аўторак', 'Серада', 'Чацвер', 'Пятніца ', 'Субота'],
+    full: {
+      en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      ru: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+      be: ['Нядзеля', 'Панядзелак', 'Аўторак', 'Серада', 'Чацвер', 'Пятніца ', 'Субота'],
+    },
+    short: {
+      en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      ru: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+      be: ['Нд', 'Пн', 'Аўт', 'Ср', 'Чц', 'Пт ', 'Сб'],
+    },
   },
   month: {
     en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -73,4 +107,5 @@ export {
   translations,
   seasons,
   dayParts,
+  formatWeekDays,
 };

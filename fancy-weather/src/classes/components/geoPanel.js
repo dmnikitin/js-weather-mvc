@@ -48,7 +48,7 @@ export default class GeoPanel {
       center: [longitude, latitude],
       zoom: 11,
     });
-    this.latitude.textContent = `${translations.layout.geoData.latitude[language]}: ${latitude.toFixed(3)}`;
-    this.longitude.textContent = `${translations.layout.geoData.longitude[language]}: ${longitude.toFixed(3)}`;
+    this.latitude.textContent = `${translations.layout.geoData.latitude[language]}: ${latitude.toFixed(4)}`;
+    this.longitude.textContent = `${translations.layout.geoData.longitude[language]}: ${longitude.toFixed(4)}`;
   }
 }

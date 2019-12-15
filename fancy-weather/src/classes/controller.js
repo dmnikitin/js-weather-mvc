@@ -169,16 +169,16 @@ export default class Controller {
     recognition.interimResults = true;
     recognition.maxAlternatives = 1;
     const {
-      mic,
+      micButton,
       text,
     } = this.view.controlPanel.queryForm;
-    mic.addEventListener('click', () => {
+    micButton.addEventListener('click', () => {
       recognition.lang = this.model.language;
       recognition.start();
     });
-    recognition.addEventListener('result', (e) => {
-      const last = e.results.length - 1;
-      const string = e.results[last][0].transcript;
+    recognition.addEventListener('result', (event) => {
+      const last = event.results.length - 1;
+      const string = event.results[last][0].transcript;
       text.value = string;
     });
     recognition.addEventListener('speechend', () => {

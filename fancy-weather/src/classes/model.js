@@ -9,6 +9,7 @@ import {
 import {
   languages,
   temperatureValues,
+  translations,
 } from '../assets/data';
 
 import {
@@ -61,6 +62,7 @@ export default class Model {
         },
       });
     } catch (err) {
+      alert(translations.layout.inputError[this.language]);
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
   }

@@ -7,6 +7,7 @@ import {
 
 import {
   temperatureValues,
+  formatWeekDays,
 } from '../../assets/data';
 
 export default class WeatherWeekPanel {
@@ -64,8 +65,8 @@ export default class WeatherWeekPanel {
       const dayTemperature = element.querySelectorAll('.weekday-container__text-instance')[1];
       const dailyTemp = json.daily.data[value];
       const average = (dailyTemp.temperatureHigh + dailyTemp.temperatureLow) / 2;
-      const temperatureString = temperatureSystem === temperatureValues.celsius ? `${toCelcius(average).toFixed(0)} °C` : `${average} °F`;
-      day.textContent = formatDate(dailyTemp.time, language);
+      const temperatureString = temperatureSystem === temperatureValues.celsius ? `${toCelcius(average).toFixed(0)} °C` : `${average.toFixed(0)} °F`;
+      day.textContent = formatDate(dailyTemp.time, language, formatWeekDays.fullName);
       dayTemperature.textContent = temperatureString;
       skycons.add(`${canvas.getAttribute('id')}`, dailyTemp.icon);
     });

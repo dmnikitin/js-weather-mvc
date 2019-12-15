@@ -36,11 +36,11 @@ const createElements = (...args) => args.map((e) => {
 });
 
 const toCelcius = (val) => ((val - 32) * 5) / 9;
-const formatDate = (time, language) => {
+const formatDate = (time, language, format) => {
   const dt = new Date(time * 1000);
   const day = dt.getDate();
   const month = dt.getMonth();
-  const weekDay = translations.weekday[language][dt.getUTCDay()];
+  const weekDay = translations.weekday[format][language][dt.getUTCDay()];
   const monthArray = translations.month[language];
   return `${monthArray[month]}, ${day}, ${weekDay}`;
 };

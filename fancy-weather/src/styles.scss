@@ -14,7 +14,7 @@ body {
 
 .container {
   width: 70%;
-  max-width: 100vw;
+  max-width: 1000px;
   margin: 10% auto;
   border-top: $border;
   border-radius: 15px;
@@ -26,18 +26,28 @@ body {
 
 .control-container {
   display: grid;
-  grid-template-areas: 'input input input temp theme lang';
+  grid-template-areas: 'input temp theme lang';
+  grid-template-columns: 70%;
   height: 50px;
   padding: 15px 20px;
   border: $border;
   border-radius: 15px 15px 0px 0px;
   font-size: 16px;
 
-  @media (min-width: 320px) and (max-width: 450px) {
+  @media (min-width: 800px) and (max-width: 1060px) {
+    grid-template-columns: 60%;
+  }
+
+  @media (min-width: 550px) and (max-width: 800px) {
+    grid-template-columns: 45%;
+  }
+
+  @media (min-width: 320px) and (max-width: 550px) {
     grid-template-columns: auto;
     grid-template-areas: 'input input input'
       'temp theme lang';
     height: 100px;
+    justify-content: center;
   }
 
   &__button {
@@ -59,7 +69,7 @@ body {
   background-color: $color-dark;
   gap: 20px;
   z-index: 100;
-  background-size: auto auto;
+  background-size: cover;
   background-repeat: no-repeat;
 
   @media (min-width: 1000px) {
@@ -75,7 +85,8 @@ body {
 .day-container {
 
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 60% 40%;
+  padding-top: 5px;
 
   @media (min-width: 320px) and (max-width: 550px) {
     display: flex;
@@ -98,6 +109,11 @@ body {
     justify-content: space-evenly;
     padding-top: 10px;
 
+    h3,
+    h4 {
+      margin: 0;
+    }
+
     @media (min-width: 320px) and (max-width: 550px) {
       justify-content: normal;
       align-items: center;
@@ -106,11 +122,24 @@ body {
   }
 
   &__text-instance {
-    font-size: 20px;
-    margin: 0;
+
+
+    &-h3 {
+      font-size: 20px;
+    }
+
+    &-h4 {
+      font-size: 15px;
+    }
 
     @media (min-width: 320px) and (max-width: 550px) {
-      font-size: 12px;
+      &-h3 {
+        font-size: 15px;
+      }
+
+      &-h4 {
+        font-size: 13px;
+      }
     }
   }
 }
@@ -277,7 +306,10 @@ body {
 .query-form {
   grid-area: input;
   margin-top: -2px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 90% 5% 5%;
+
+
 
   &__text {
     border: 2px solid $color-dark;
@@ -285,42 +317,36 @@ body {
     height: $button-height;
     width: 90%;
 
-    @media (min-width: 450px) and (max-width: 710px) {
+    @media (max-width: 710px) {
       width: 100%;
     }
   }
 
-  &__mic {
+  button {
+    background: transparent;
     position: relative;
-    right: 6vw;
-    top: 8px;
-    color: black;
-    width: 5%;
+    top: 3px;
+    height: 30px;
+    width: 30px;
+    border: 1px solid transparent;
+    border-radius: 30px;
+    padding: 0;
+    color: $color-dark;
+  }
 
-    @media (min-width: 450px) and (max-width: 710px) {
+  &__mic {
+    right: 10vw;
+
+    @media (min-width: 450px) and (max-width: 700px) {
       right: 9vw;
-    }
-
-    @media (max-width: 450px) {
-      right: 13vw;
     }
   }
 
   &__submit {
-    border: none;
-    background: transparent;
-    position: relative;
-    right: 6vw;
-    top: 7px;
-    height: 30px;
-    width: 10%;
+    right: 9vw;
 
-    @media (min-width: 450px) and (max-width: 710px) {
+    @media (min-width: 450px) and (max-width: 700px) {
       right: 8vw;
-    }
-
-    @media (max-width: 450px) {
-      right: 11vw;
     }
   }
 }
@@ -339,17 +365,23 @@ body {
   font-size: 20px;
   text-transform: uppercase;
 
+  @media (max-width: 450px) {
+    width: 95px;
+  }
+
   @media (min-width: 450px) and (max-width: 710px) {
-    width: 50px;
+    width: 70px;
   }
 
   &-button {
     border-color: transparent;
     background-color: inherit;
     height: $button-height;
+    padding-bottom: 3px;
+    line-height: 18px;
 
-    @media (min-width: 450px) and (max-width: 710px) {
-      width: 17px;
+    @media (max-width: 710px) {
+
       font-size: 13px;
       padding: 0;
     }
