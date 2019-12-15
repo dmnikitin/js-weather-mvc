@@ -14,15 +14,15 @@ import {
 export default class View {
   constructor() {
     this.controlPanel = new ControlPanel();
-    this.weatherDayPanel = new WeatherDayPanel();
-    this.weatherWeekPanel = new WeatherWeekPanel();
+    this.dayPanel = new WeatherDayPanel();
+    this.weekPanel = new WeatherWeekPanel();
     this.geoPanel = new GeoPanel();
     const [container, mainbox] = createElements({
       element: 'main',
-      classes: 'container',
+      classes: ['container'],
     }, {
       element: 'div',
-      classes: 'mainbox',
+      classes: ['mainbox'],
     });
     this.app = getElement('#root');
     Object.assign(this, {
@@ -32,14 +32,12 @@ export default class View {
   }
 
   displayData(data, language, temperature, theme, place) {
-    console.log(this.mainbox);
+    this.mainbox.append(this.dayPanel.container, this.weekPanel.container, this.geoPanel.container);
     this.container.append(this.controlPanel.container, this.mainbox);
     this.app.append(this.container);
-
-    this.mainbox.append(this.weatherDayPanel.container, this.weatherWeekPanel.container, this.geoPanel.container);
     this.mainbox.style.backgroundImage = `linear-gradient(rgba(63, 69, 81, 0.6), rgba(63, 69, 81, 0.6)), url(${theme})`;
-    this.weatherDayPanel.displayData(data, language, temperature, place);
-    this.weatherWeekPanel.displayData(data, language, temperature);
+    this.dayPanel.displayData(data, language, temperature, place);
+    this.weekPanel.displayData(data, language, temperature);
     this.controlPanel.display(language, temperature);
     this.geoPanel.display(data.latitude, data.longitude, language);
   }
@@ -72,8 +70,6 @@ export default class View {
 
   bindQuery(handler) {
     this.controlPanel.queryForm.container.addEventListener('submit', (event) => {
-      console.log('pidr');
-      console.log(this.controlPanel.queryForm.text.value);
       event.preventDefault();
       handler(this.controlPanel.queryForm.text.value);
     });

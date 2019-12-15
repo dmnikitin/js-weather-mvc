@@ -1,6 +1,5 @@
 import {
   createElements,
-  setAttributes,
 } from '../../helpers/other';
 import {
   translations,
@@ -11,19 +10,22 @@ export default class GeoPanel {
   constructor() {
     const [container, mapWrapper, textWrapper, latitude, longitude] = createElements({
       element: 'section',
-      classes: 'map-container',
+      classes: ['map-container'],
     }, {
       element: 'div',
-      classes: 'map-wrapper',
+      classes: ['map-wrapper'],
+      attrs: {
+        id: 'map',
+      },
     }, {
       element: 'div',
-      classes: 'map-text-wrapper',
+      classes: ['map-text-wrapper'],
     }, {
       element: 'h3',
-      classes: 'map-text-instance',
+      classes: ['map-text-instance'],
     }, {
       element: 'h3',
-      classes: 'map-text-instance',
+      classes: ['map-text-instance'],
     });
     Object.assign(this, {
       container,
@@ -32,17 +34,16 @@ export default class GeoPanel {
       latitude,
       longitude,
     });
-    setAttributes(mapWrapper, {
-      id: 'map',
-    });
     this.textWrapper.append(this.latitude, this.longitude);
     this.container.append(this.mapWrapper, this.textWrapper);
   }
 
   display(latitude, longitude, language) {
+    /* eslint no-undef: 0 */
+    /* eslint no-unused-vars: 0 */
     mapboxgl.accessToken = API_KEYS.mapToken;
     const map = new mapboxgl.Map({
-      container: 'map', // container id
+      container: 'map',
       style: 'mapbox://styles/mapbox/streets-v11',
       center: [longitude, latitude],
       zoom: 11,

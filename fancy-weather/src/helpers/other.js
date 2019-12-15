@@ -20,19 +20,22 @@ const getElement = (selector) => {
 
 const createElements = (...args) => args.map((e) => {
   const element = document.createElement(e.element);
-  element.classList.add(e.classes);
+  element.classList.add(...e.classes);
+  if (Object.prototype.hasOwnProperty.call(e, 'attrs')) {
+    const keys = Object.keys(e.attrs);
+    keys.forEach((key) => {
+      if (keys.includes(key)) {
+        element.setAttribute(key, e.attrs[key]);
+      }
+    });
+  }
+  if (Object.prototype.hasOwnProperty.call(e, 'textContent')) {
+    element.textContent = e.textContent;
+  }
   return element;
 });
 
-const setAttributes = (el, attrs) => {
-  for (const key in attrs) {
-    if (attrs.hasOwnProperty(key)) {
-      el.setAttribute(key, attrs[key]);
-    }
-  }
-};
-
-const toCelcius = (val) => (val - 32) * 5 / 9;
+const toCelcius = (val) => ((val - 32) * 5) / 9;
 const formatDate = (time, language) => {
   const dt = new Date(time * 1000);
   const day = dt.getDate();
@@ -69,7 +72,6 @@ export {
   getInitialCoordinates,
   getElement,
   createElements,
-  setAttributes,
   toCelcius,
   formatDate,
   getCurrentTime,

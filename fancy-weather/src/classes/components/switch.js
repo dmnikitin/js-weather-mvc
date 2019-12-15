@@ -1,35 +1,33 @@
 import {
   createElements,
-  setAttributes,
 } from '../../helpers/other';
 
 export default class Switch {
   constructor() {
     const [container, input, label, on, off] = createElements({
       element: 'div',
-      classes: 'onoffswitch',
+      classes: ['onoffswitch'],
     }, {
       element: 'input',
-      classes: 'onoffswitch-checkbox',
+      classes: ['onoffswitch-checkbox'],
+      attrs: {
+        type: 'checkbox',
+        name: 'onoffswitch',
+        id: 'myonoffswitch',
+        checked: true,
+      },
     }, {
       element: 'label',
-      classes: 'onoffswitch-label',
+      classes: ['onoffswitch-label'],
+      attrs: {
+        for: 'myonoffswitch',
+      },
     }, {
       element: 'span',
-      classes: 'onoffswitch-inner',
+      classes: ['onoffswitch-inner'],
     }, {
       element: 'span',
-      classes: 'onoffswitch-switch',
-    });
-
-    setAttributes(input, {
-      type: 'checkbox',
-      name: 'onoffswitch',
-      id: 'myonoffswitch',
-      checked: true,
-    });
-    setAttributes(label, {
-      for: 'myonoffswitch',
+      classes: ['onoffswitch-switch'],
     });
     Object.assign(this, {
       container,

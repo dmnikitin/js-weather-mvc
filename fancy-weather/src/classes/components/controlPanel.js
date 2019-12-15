@@ -1,6 +1,5 @@
 import {
   createElements,
-  setAttributes,
 } from '../../helpers/other';
 
 import {
@@ -16,14 +15,13 @@ export default class ControlPanel {
   constructor() {
     const [container, themeButton] = createElements({
       element: 'section',
-      classes: 'control-container',
+      classes: ['control-container'],
     }, {
       element: 'button',
-      classes: 'control-container__button',
-    });
-
-    setAttributes(themeButton, {
-      id: 'theme-button',
+      classes: ['control-container__button'],
+      attrs: {
+        id: 'theme-button',
+      },
     });
 
     Object.assign(this, {
@@ -33,7 +31,8 @@ export default class ControlPanel {
     this.temperatureButton = new Switch();
     this.languageButton = new Picker();
     this.queryForm = new QueryForm();
-    this.container.append(this.queryForm.container, this.temperatureButton.container, this.themeButton, this.languageButton.container);
+    this.container.append(this.queryForm.container, this.temperatureButton.container);
+    this.container.append(this.themeButton, this.languageButton.container);
   }
 
   display(language, temperature) {
@@ -43,9 +42,7 @@ export default class ControlPanel {
     } else {
       this.temperatureButton.input.checked = false;
     }
-    setAttributes(this.queryForm.text, {
-      placeholder: translations.layout.city[language],
-    });
+    this.queryForm.text.setAttribute('placeholder', translations.layout.city[language]);
     [...this.languageButton.container.children].forEach((button) => {
       button.classList.remove('button-focus');
       if (button.textContent === language) {
