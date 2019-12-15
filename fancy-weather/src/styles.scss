@@ -46,16 +46,9 @@ button::before {
 }
 
 button {
-
-
   &:hover {
-
     animation: button-back-pulse 2s linear infinite;
   }
-
-
-
-
 }
 
 .rotate {
@@ -64,7 +57,7 @@ button {
   width: 50px;
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 45%;
   animation: rotate 3s linear infinite;
 }
 

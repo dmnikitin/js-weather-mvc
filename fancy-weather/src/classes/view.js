@@ -25,14 +25,18 @@ export default class View {
       classes: 'mainbox',
     });
     this.app = getElement('#root');
-    this.container = container;
-    this.mainbox = mainbox;
+    Object.assign(this, {
+      container,
+      mainbox,
+    });
   }
 
   displayData(data, language, temperature, theme, place) {
-    this.mainbox.append(this.weatherDayPanel.container, this.weatherWeekPanel.container, this.geoPanel.container);
+    console.log(this.mainbox);
     this.container.append(this.controlPanel.container, this.mainbox);
     this.app.append(this.container);
+
+    this.mainbox.append(this.weatherDayPanel.container, this.weatherWeekPanel.container, this.geoPanel.container);
     this.mainbox.style.backgroundImage = `linear-gradient(rgba(63, 69, 81, 0.6), rgba(63, 69, 81, 0.6)), url(${theme})`;
     this.weatherDayPanel.displayData(data, language, temperature, place);
     this.weatherWeekPanel.displayData(data, language, temperature);

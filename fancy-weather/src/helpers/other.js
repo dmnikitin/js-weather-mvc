@@ -57,6 +57,14 @@ const getProperImageQuery = (time, weather) => {
   return `${weather} ${dayParts[Math.floor(hour / 6)]} ${seasons[month]}`;
 };
 
+const deleteChild = (element) => {
+  let child = element.lastElementChild;
+  while (child) {
+    element.removeChild(child);
+    child = element.lastElementChild;
+  }
+};
+
 export {
   getInitialCoordinates,
   getElement,
@@ -66,4 +74,5 @@ export {
   formatDate,
   getCurrentTime,
   getProperImageQuery,
+  deleteChild,
 };
