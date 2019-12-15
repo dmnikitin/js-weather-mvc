@@ -43,14 +43,12 @@ export default class View {
   }
 
   bindTemperature(handler) {
-    this.controlPanel.temperatureButton.container.addEventListener('click', (event) => {
+    this.controlPanel.temperatureButton.container.addEventListener('change', (event) => {
       const {
         celsius,
         fahrenheit,
       } = temperatureValues;
-      console.log('view bind checked', event.target.checked);
       const temperature = event.target.checked ? celsius : fahrenheit;
-      console.log('TCL: View -> bindTemperature -> temperature', temperature);
       handler(temperature);
     });
   }

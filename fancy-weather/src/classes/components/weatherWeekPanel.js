@@ -1,7 +1,6 @@
 import Skycons from 'skycons-modern';
 import {
   createElements,
-  getElement,
   toCelcius,
   formatDate,
 } from '../../helpers/other';
@@ -58,7 +57,6 @@ export default class WeatherWeekPanel {
     const skycons = new Skycons({
       color: 'white',
     });
-    console.log(this.container.children);
     [...this.container.children].forEach((element) => {
       const canvas = element.querySelector('.weekday-container__canvas');
       const value = canvas.getAttribute('data');

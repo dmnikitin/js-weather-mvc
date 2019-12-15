@@ -28,7 +28,7 @@ export default class Controller {
     this.reload = reload;
     this.getInitialData();
     this.voiceSearch();
-    // setInterval(() => this.getData(this.model.place), 60000);
+    setInterval(() => this.getData(this.model.place), 60000);
   }
 
 
@@ -68,8 +68,6 @@ export default class Controller {
     let {
       position,
     } = this.model;
-
-
     deleteChild(this.view.mainbox);
     this.view.mainbox.append(this.reload);
     try {
