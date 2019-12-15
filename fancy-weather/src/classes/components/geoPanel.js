@@ -9,7 +9,7 @@ import API_KEYS from '../../helpers/sensitive';
 
 export default class GeoPanel {
   constructor() {
-    const [container, mapWrapper, textWrapper] = createElements({
+    const [container, mapWrapper, textWrapper, latitude, longitude] = createElements({
       element: 'section',
       classes: 'map-container',
     }, {
@@ -18,15 +18,24 @@ export default class GeoPanel {
     }, {
       element: 'div',
       classes: 'map-text-wrapper',
+    }, {
+      element: 'h3',
+      classes: 'map-text-instance',
+    }, {
+      element: 'h3',
+      classes: 'map-text-instance',
     });
     Object.assign(this, {
       container,
       mapWrapper,
       textWrapper,
+      latitude,
+      longitude,
     });
     setAttributes(mapWrapper, {
       id: 'map',
     });
+    this.textWrapper.append(this.latitude, this.longitude);
     this.container.append(this.mapWrapper, this.textWrapper);
   }
 
@@ -38,6 +47,7 @@ export default class GeoPanel {
       center: [longitude, latitude],
       zoom: 11,
     });
-    this.textWrapper.textContent = `${translations.layout.geoData.latitude[language]}: ${latitude}, ${translations.layout.geoData.longitude[language]}: ${longitude}`;
+    this.latitude.textContent = `${translations.layout.geoData.latitude[language]}: ${latitude.toFixed(3)}`;
+    this.longitude.textContent = `${translations.layout.geoData.longitude[language]}: ${longitude.toFixed(3)}`;
   }
 }

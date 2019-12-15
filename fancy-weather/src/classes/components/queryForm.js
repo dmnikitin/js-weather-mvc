@@ -5,7 +5,7 @@ import {
 
 export default class QueryForm {
   constructor() {
-    const [container, text, button, icon] = createElements({
+    const [container, text, button, icon, mic] = createElements({
       element: 'form',
       classes: 'query-form',
     }, {
@@ -17,6 +17,9 @@ export default class QueryForm {
     }, {
       element: 'i',
       classes: 'material-icons',
+    }, {
+      element: 'i',
+      classes: 'material-icons',
     });
 
     setAttributes(text, {
@@ -25,16 +28,18 @@ export default class QueryForm {
     });
 
     icon.textContent = 'search';
-
+    mic.textContent = 'mic';
+    mic.classList.add('query-form__mic');
 
     button.append(icon);
 
     Object.assign(this, {
       container,
       text,
+      mic,
       button,
     });
 
-    this.container.append(this.text, this.button);
+    this.container.append(this.text, this.mic, this.button);
   }
 }

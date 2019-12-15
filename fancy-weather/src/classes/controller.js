@@ -20,7 +20,7 @@ export default class Controller {
     this.view.bindTheme(this.handleTheme);
     this.view.bindQuery(this.getData);
     this.getInitialData();
-    setInterval(() => this.getData(this.model.place), 60000);
+    // setInterval(() => this.getData(this.model.place), 60000);
   }
 
 
@@ -49,7 +49,7 @@ export default class Controller {
   }
 
   async getData(requiredPlace) {
-    this.view.mainbox.innerHTML = '<div class="data-loading"><i class=\'fa fa-refresh fa-spin\'></i></div>';
+    this.view.mainbox.innerHTML = '<i class="material-icons rotate">loop</i>';
     let {
       position,
     } = this.model;
@@ -68,7 +68,6 @@ export default class Controller {
       language,
       temperature,
       theme,
-      place,
     } = this.model;
     try {
       this.model.place = await this.model.getPlaceFromCoords(position.coords.latitude, position.coords.longitude, language);
@@ -76,7 +75,7 @@ export default class Controller {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
     this.view.mainbox.innerHTML = '';
-    this.view.displayData(loadedData, language, temperature, theme, place);
+    this.view.displayData(loadedData, language, temperature, theme, this.model.place);
   }
 
   handleTemperature(temperature) {
@@ -119,7 +118,6 @@ export default class Controller {
       loadedData,
       language,
       temperature,
-      theme,
       place,
     } = this.model;
     const imageQuery = getProperImageQuery(time, icon);
@@ -128,6 +126,6 @@ export default class Controller {
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
-    this.view.displayData(loadedData, language, temperature, theme, place);
+    this.view.displayData(loadedData, language, temperature, this.model.theme, place);
   }
 }

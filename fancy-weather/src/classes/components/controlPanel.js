@@ -33,7 +33,7 @@ export default class ControlPanel {
     this.temperatureButton = new Switch();
     this.languageButton = new Picker();
     this.queryForm = new QueryForm();
-    this.container.append(this.themeButton, this.languageButton.container, this.temperatureButton.container, this.queryForm.container);
+    this.container.append(this.queryForm.container, this.temperatureButton.container, this.themeButton, this.languageButton.container);
   }
 
   display(language) {
