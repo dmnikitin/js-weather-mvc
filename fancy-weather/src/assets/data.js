@@ -77,35 +77,26 @@ const translations = {
     ru: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
     be: ['Студзень', 'Люты', 'Сакавiк', 'Красавiк', 'Травень', 'Чэрвень', 'Лiпень', 'Жнiвень', 'Верасень', 'Кастрычнiк', 'Лiстапад', 'Снежань'],
   },
-  weather: {
-    en: ['clear-day', 'clear-night', 'partly-cloudy-day', 'partly-cloudy-night', 'cloudy', 'rain', 'sleet', 'snow', 'wind', 'fog'],
-    ru: ['Ясно', 'Ясная ночь', 'День, частичная облачность', 'Ночь, частичная облачность', 'Облачно', 'Дождь', 'Дождь со снегом', 'Снег', 'Сильный ветер', 'Туман'],
-    be: ['Ясна', 'Ясная ноч', 'Дзень, частковая воблачнасць', 'Ноч, частковая воблачнасць', 'Воблачна ', 'Дождж', 'Дождж са снегам', 'Снег', 'Моцны вецер', 'Туман'],
+  seasons: {
+    0: 'winter',
+    1: 'winter',
+    2: 'spring',
+    3: 'spring',
+    4: 'spring',
+    5: 'summer',
+    6: 'summer',
+    7: 'summer',
+    8: 'fall',
+    9: 'fall',
+    10: 'fall',
+    11: 'winter',
   },
+  dayParts: ['night', 'morning', 'day', 'evening'],
 };
-const seasons = {
-  0: 'winter',
-  1: 'winter',
-  2: 'spring',
-  3: 'spring',
-  4: 'spring',
-  5: 'summer',
-  6: 'summer',
-  7: 'summer',
-  8: 'fall',
-  9: 'fall',
-  10: 'fall',
-  11: 'winter',
-};
-
-const dayParts = ['night', 'morning', 'day', 'evening'];
-
 
 export {
   temperatureValues,
   languages,
   translations,
-  seasons,
-  dayParts,
   formatWeekDays,
 };

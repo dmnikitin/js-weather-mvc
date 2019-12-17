@@ -10,6 +10,7 @@ import {
   temperatureValues,
   translations,
   formatWeekDays,
+  languages,
 } from '../../assets/data';
 
 export default class WeatherDayPanel {
@@ -29,7 +30,7 @@ export default class WeatherDayPanel {
       element: 'div',
       classes: ['day-container__text-wrapper'],
     });
-    const [place, currTime, currDay, summary] = createElements({
+    const [place, currTime, currDay, sum] = createElements({
       element: 'h3',
       classes: ['day-container__text-instance-h3'],
     }, {
@@ -60,12 +61,12 @@ export default class WeatherDayPanel {
       place,
       currTime,
       currDay,
-      summary,
+      sum,
       apparent,
       wind,
       humid,
     });
-    this.textWrapper.append(this.place, this.currDay, this.currTime, this.summary);
+    this.textWrapper.append(this.place, this.currDay, this.currTime, this.sum);
     this.textWrapper.append(this.apparent, this.wind, this.humid);
     this.container.append(this.canvas, this.textWrapper);
   }
@@ -75,6 +76,7 @@ export default class WeatherDayPanel {
       timezone,
       currently: {
         time,
+        summary,
         temperature,
         apparentTemperature,
         humidity,
@@ -87,17 +89,15 @@ export default class WeatherDayPanel {
       color: 'white',
     });
 
-    const translatedWeather = translations.weather[language];
     const temperatureString = temperatureSystem === temperatureValues.celsius ? `${toCelcius(temperature).toFixed(0)} °C` : `${temperature.toFixed(0)} °F`;
     const apparentString = temperatureSystem === temperatureValues.celsius ? `${toCelcius(apparentTemperature).toFixed(0)} °C` : `${apparentTemperature.toFixed(0)} °F`;
-
+    const windSpeedParts = language === languages.en ? 'm/s' : 'м/c';
     this.place.textContent = place;
     this.currTime.textContent = getCurrentTime(timezone);
-
     this.currDay.textContent = formatDate(time, language, formatWeekDays.shortName);
-    this.summary.textContent = `${translatedWeather[translations.weather.en.indexOf(icon)]}, ${temperatureString}`;
+    this.sum.textContent = `${summary}, ${temperatureString}`;
     this.apparent.textContent = `${translations.layout.weather.apparent[language]}: ${apparentString}`;
-    this.wind.textContent = `${translations.layout.weather.windSpeed[language]}: ${windSpeed} m/s`;
+    this.wind.textContent = `${translations.layout.weather.windSpeed[language]}: ${windSpeed} ${windSpeedParts}`;
     this.humid.textContent = `${translations.layout.weather.humidity[language]}: ${humidity}%`;
     skycons.add('mainWeatherIcon', icon);
     skycons.play();

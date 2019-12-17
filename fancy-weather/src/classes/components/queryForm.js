@@ -22,7 +22,7 @@ export default class QueryForm {
       classes: ['material-icons'],
       textContent: 'search',
     }, {
-      element: 'button',
+      element: 'span',
       classes: ['query-form__mic'],
     }, {
       element: 'i',

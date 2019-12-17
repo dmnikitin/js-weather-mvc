@@ -1,5 +1,6 @@
 import {
   createElements,
+  geoCodesToView,
 } from '../../helpers/other';
 import {
   translations,
@@ -48,7 +49,10 @@ export default class GeoPanel {
       center: [longitude, latitude],
       zoom: 11,
     });
-    this.latitude.textContent = `${translations.layout.geoData.latitude[language]}: ${latitude.toFixed(4)}`;
-    this.longitude.textContent = `${translations.layout.geoData.longitude[language]}: ${longitude.toFixed(4)}`;
+    map.on('load', () => {
+      map.resize();
+    });
+    this.latitude.textContent = `${translations.layout.geoData.latitude[language]}: ${geoCodesToView(latitude)}`;
+    this.longitude.textContent = `${translations.layout.geoData.longitude[language]}: ${geoCodesToView(longitude)}`;
   }
 }

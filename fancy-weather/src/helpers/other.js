@@ -1,7 +1,5 @@
 import {
   translations,
-  seasons,
-  dayParts,
 } from '../assets/data';
 
 const getInitialCoordinates = () => new Promise((resolve, reject) => {
@@ -57,7 +55,7 @@ const getProperImageQuery = (time, weather) => {
   const dt = new Date(time * 1000);
   const month = dt.getMonth();
   const hour = dt.getHours();
-  return `${weather} ${dayParts[Math.floor(hour / 6)]} ${seasons[month]}`;
+  return `${weather} ${translations.dayParts[Math.floor(hour / 6)]} ${translations.seasons[month]}`;
 };
 
 const deleteChild = (element) => {
@@ -66,6 +64,13 @@ const deleteChild = (element) => {
     element.removeChild(child);
     child = element.lastElementChild;
   }
+};
+
+const geoCodesToView = (decimalDeg) => {
+  const degrees = Math.floor(decimalDeg);
+  const minutes = (decimalDeg - degrees) * 60;
+  const seconds = (minutes - Math.floor(minutes)) * 60;
+  return `${degrees}° ${Math.floor(minutes)}' ${seconds.toFixed(2)}"`;
 };
 
 export {
@@ -77,4 +82,5 @@ export {
   getCurrentTime,
   getProperImageQuery,
   deleteChild,
+  geoCodesToView,
 };
