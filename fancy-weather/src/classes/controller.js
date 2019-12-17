@@ -7,6 +7,9 @@ import {
 import {
   getFromLocalStorage,
 } from '../helpers/localstorage';
+import {
+  getCoordsFromPlace,
+} from '../helpers/fetch';
 
 export default class Controller {
   constructor(model, view) {
@@ -27,10 +30,9 @@ export default class Controller {
     });
     this.reload = reload;
     this.getInitialData();
-    this.voiceSearch();
+    this.handleVoiceSearch();
     setInterval(() => this.getData(this.model.place), 60000);
   }
-
 
   async getInitialData() {
     const {
@@ -44,14 +46,14 @@ export default class Controller {
         latitude,
         longitude,
       } = position.coords;
-      const result = await this.model.loadData(latitude, longitude);
+      const result = await this.model.setWeather(latitude, longitude);
       const {
         time,
         icon,
       } = result.currently;
       const imageQuery = getProperImageQuery(time, icon);
       await this.model.setTheme(imageQuery);
-      await this.model.getPlaceFromCoords(latitude, longitude, language);
+      await this.model.setGeoData(latitude, longitude, language);
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
@@ -72,13 +74,13 @@ export default class Controller {
     this.view.mainbox.append(this.reload);
     try {
       if (requiredPlace) {
-        position = await this.model.getCoordsFromPlace(requiredPlace);
+        position = await getCoordsFromPlace(requiredPlace, this.model.language);
       }
       const {
         latitude,
         longitude,
       } = position.coords;
-      const result = await this.model.loadData(latitude, longitude);
+      const result = await this.model.setWeather(latitude, longitude);
       const {
         time,
         icon,
@@ -93,7 +95,7 @@ export default class Controller {
       language,
       temperature,
       theme,
-      getPlaceFromCoords,
+      setGeoData,
     } = this.model;
     let {
       place,
@@ -103,7 +105,7 @@ export default class Controller {
         latitude,
         longitude,
       } = position.coords;
-      place = await getPlaceFromCoords(latitude, longitude, language);
+      place = await setGeoData(latitude, longitude, language);
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
@@ -111,33 +113,18 @@ export default class Controller {
     this.view.displayData(loadedData, language, temperature, theme, place);
   }
 
-  handleTemperature(temperature) {
-    const {
-      setTemperature,
-      loadedData,
-      language,
-      theme,
-      place,
-    } = this.model;
-    setTemperature(temperature);
-    this.view.displayData(loadedData, language, temperature, theme, place);
-  }
-
   async handleLanguage(language) {
     const {
       setLanguage,
-      loadedData,
-      temperature,
-      theme,
-      getPlaceFromCoords,
+      setGeoData,
       position: {
         latitude,
         longitude,
       },
     } = this.model;
     setLanguage(language);
-    const place = await getPlaceFromCoords(latitude, longitude, language);
-    this.view.displayData(loadedData, language, temperature, theme, place);
+    const place = await setGeoData(latitude, longitude, language);
+    this.getData(place);
   }
 
   async handleTheme() {
@@ -163,7 +150,19 @@ export default class Controller {
     this.view.displayData(loadedData, language, temperature, this.model.theme, place);
   }
 
-  voiceSearch() {
+  handleTemperature(temperature) {
+    const {
+      setTemperature,
+      loadedData,
+      language,
+      theme,
+      place,
+    } = this.model;
+    setTemperature(temperature);
+    this.view.displayData(loadedData, language, temperature, theme, place);
+  }
+
+  handleVoiceSearch() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
     recognition.interimResults = true;

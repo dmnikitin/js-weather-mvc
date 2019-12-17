@@ -1,31 +1,29 @@
 import {
+  getPlaceFromCoords,
   getWeatherURL,
   getImageURL,
   getData,
-  getPlaceURL,
-  getCoordsURL,
 } from '../helpers/fetch';
 
 import {
-  languages,
-  temperatureValues,
-  translations,
-} from '../assets/data';
-
-import {
   saveToLocalStorage,
+  getFromLocalStorage,
 } from '../helpers/localstorage';
 
 export default class Model {
   constructor() {
+    const {
+      temperature,
+      language,
+    } = getFromLocalStorage();
     this.loadedData = {};
-    this.language = languages.en;
-    this.temperature = temperatureValues.celsius;
+    this.language = language;
+    this.temperature = temperature;
     this.theme = null;
     this.setLanguage = this.setLanguage.bind(this);
     this.setTemperature = this.setTemperature.bind(this);
     this.setTheme = this.setTheme.bind(this);
-    this.getPlaceFromCoords = this.getPlaceFromCoords.bind(this);
+    this.setGeoData = this.setGeoData.bind(this);
   }
 
   setLanguage(language) {
@@ -44,43 +42,17 @@ export default class Model {
     });
   }
 
-  async getCoordsFromPlace(place) {
-    const url = getCoordsURL(place, this.language);
+  async setGeoData(latitude, longitude, language) {
     try {
-      const data = await getData(url);
-      const {
-        geometry: coords,
-      } = data.results[0];
-      const {
-        lat: latitude,
-        lng: longitude,
-      } = coords;
-      return ({
-        coords: {
+      const place = await getPlaceFromCoords(latitude, longitude, language);
+      Object.assign(this, {
+        position: {
           latitude,
           longitude,
         },
+        place,
       });
-    } catch (err) {
-      alert(translations.layout.inputError[this.language]);
-      throw new Error(`ERROR(${err.code}): ${err.message}`);
-    }
-  }
-
-  async getPlaceFromCoords(latitude, longitude, language) {
-    const url = getPlaceURL(latitude, longitude, language);
-    try {
-      const data = await getData(url);
-      const {
-        city,
-        country,
-      } = data.results[0].components;
-      this.position = {
-        latitude,
-        longitude,
-      };
-      this.place = `${city}, ${country}`;
-      return this.place;
+      return place;
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
@@ -97,8 +69,8 @@ export default class Model {
     }
   }
 
-  async loadData(latitude, longitude) {
-    const url = getWeatherURL(latitude, longitude);
+  async setWeather(latitude, longitude) {
+    const url = getWeatherURL(latitude, longitude, this.language);
     try {
       const result = await getData(url);
       this.loadedData = result;
