@@ -31,7 +31,7 @@ export default class Controller {
     this.reload = reload;
     this.getInitialData();
     this.handleVoiceSearch();
-    setInterval(() => this.getData(this.model.place), 60000);
+    setInterval(() => this.getData(this.model.place), 120000);
   }
 
   async getInitialData() {
