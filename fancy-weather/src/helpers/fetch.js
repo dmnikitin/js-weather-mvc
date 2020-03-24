@@ -1,16 +1,22 @@
-import API_KEYS from './sensitive';
 import {
   translations,
 } from '../assets/data';
 
-const getWeatherURL = (latitude, longitude, language) => `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${API_KEYS.weatherToken}/${latitude},${longitude}?lang=${language}`;
-const getImageURL = (query) => `https://api.unsplash.com/photos/random?query=${query}&client_id=${API_KEYS.imageToken}`;
-const getCoordsURL = (query, language) => `https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${API_KEYS.geoToken}&language=${language}&pretty=1`;
-const getPlaceURL = (latitude, longitude, language) => `https://api.opencagedata.com/geocode/v1/json?q=${latitude},${longitude}&key=${API_KEYS.geoToken}&language=${language}&pretty=1`;
+const headers = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'X-Requested-With': 'XMLHttpRequest',
+  },
+};
 
-async function getData(url) {
+
+async function getData(url, ...requestBody) {
+  // const bodyQuery = requestBody.reduce( (acc, el) => `${acc}&${el}`, '');
+  const bodyQuery = requestBody.join('&');
+  const modifiedHeaders = { ...headers, body: bodyQuery };
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, modifiedHeaders);
     return response.json();
   } catch (error) {
     throw new Error(`ERROR(${error.code}): ${error.message}`);
@@ -18,9 +24,8 @@ async function getData(url) {
 }
 
 async function getCoordsFromPlace(place, language) {
-  const url = getCoordsURL(place, language);
   try {
-    const data = await getData(url);
+    const data = await getData('/place', place, language);
     const {
       geometry: coords,
     } = data.results[0];
@@ -41,9 +46,9 @@ async function getCoordsFromPlace(place, language) {
 }
 
 async function getPlaceFromCoords(latitude, longitude, language) {
-  const url = getPlaceURL(latitude, longitude, language);
+  const place = `${latitude},${longitude}`;
   try {
-    const data = await getData(url);
+    const data = await getData('/place', place, language);
     const {
       city,
       country,
@@ -55,10 +60,6 @@ async function getPlaceFromCoords(latitude, longitude, language) {
 }
 
 export {
-  getWeatherURL,
-  getImageURL,
-  getCoordsURL,
-  getPlaceURL,
   getData,
   getCoordsFromPlace,
   getPlaceFromCoords,
