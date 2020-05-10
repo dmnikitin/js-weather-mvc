@@ -2,10 +2,10 @@ import {
   createElements,
   geoCodesToView,
 } from '../../helpers/other';
+import { getGeoToken } from '../../helpers/fetch';
 import {
   translations,
 } from '../../assets/data';
-import API_KEYS from '../../helpers/sensitive';
 
 export default class GeoPanel {
   constructor() {
@@ -39,20 +39,24 @@ export default class GeoPanel {
     this.container.append(this.mapWrapper, this.textWrapper);
   }
 
-  display(latitude, longitude, language) {
+  async display(latitude, longitude, language) {
     /* eslint no-undef: 0 */
-    /* eslint no-unused-vars: 0 */
-    mapboxgl.accessToken = API_KEYS.mapToken;
-    const map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [longitude, latitude],
-      zoom: 11,
-    });
-    map.on('load', () => {
-      map.resize();
-    });
-    this.latitude.textContent = `${translations.layout.geoData.latitude[language]}: ${geoCodesToView(latitude)}`;
-    this.longitude.textContent = `${translations.layout.geoData.longitude[language]}: ${geoCodesToView(longitude)}`;
+    try {
+      const { token } = await getGeoToken();
+      mapboxgl.accessToken = token;
+      const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [longitude, latitude],
+        zoom: 9,
+      });
+      map.on('load', () => {
+        map.resize();
+      });
+      this.latitude.textContent = `${translations.layout.geoData.latitude[language]}: ${geoCodesToView(latitude)}`;
+      this.longitude.textContent = `${translations.layout.geoData.longitude[language]}: ${geoCodesToView(longitude)}`;
+    } catch (err) {
+      throw new Error(`ERROR(${err.code}): ${err.message}`);
+    }
   }
 }
