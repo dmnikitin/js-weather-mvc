@@ -10,13 +10,13 @@ const headers = {
   },
 };
 
-
-async function getData(url, ...requestBody) {
-  // const bodyQuery = requestBody.reduce( (acc, el) => `${acc}&${el}`, '');
-  const bodyQuery = requestBody.join('&');
-  const modifiedHeaders = { ...headers, body: bodyQuery };
+async function fetchData(url, requestBody) {
+  const arr = Object.entries(requestBody).map(([prop, value]) => `${prop}=${value}&`);
+  const body = arr.join('');
+  const modifiedHeaders = { ...headers, body };
   try {
     const response = await fetch(url, modifiedHeaders);
+    if (!response) throw new Error('fetchData error');
     return response.json();
   } catch (error) {
     throw new Error(`ERROR(${error.code}): ${error.message}`);
@@ -25,14 +25,15 @@ async function getData(url, ...requestBody) {
 
 async function getCoordsFromPlace(place, language) {
   try {
-    const data = await getData('/place', place, language);
+    const requestBody = { place, language };
+    const data = await fetchData('http://localhost:8080/place', requestBody);
+    if (!data) throw new Error('getCoordsFromPlace error');
     const {
-      geometry: coords,
+      geometry: {
+        lat: latitude,
+        lng: longitude,
+      },
     } = data.results[0];
-    const {
-      lat: latitude,
-      lng: longitude,
-    } = coords;
     return ({
       coords: {
         latitude,
@@ -46,9 +47,10 @@ async function getCoordsFromPlace(place, language) {
 }
 
 async function getPlaceFromCoords(latitude, longitude, language) {
-  const place = `${latitude},${longitude}`;
   try {
-    const data = await getData('/place', place, language);
+    const requestBody = { place: `${latitude},${longitude}`, language };
+    const data = await fetchData('http://localhost:8080/place', requestBody);
+    if (!data) throw new Error('getPlaceFromCoords error');
     const {
       city,
       country,
@@ -59,8 +61,19 @@ async function getPlaceFromCoords(latitude, longitude, language) {
   }
 }
 
+async function getGeoToken() {
+  try {
+    const maptoken = await fetch('http://localhost:8080/map');
+    if (!maptoken) throw new Error('getGeoToken error');
+    return maptoken.json();
+  } catch (err) {
+    throw new Error(`ERROR(${err.code}): ${err.message}`);
+  }
+}
+
 export {
-  getData,
+  fetchData,
   getCoordsFromPlace,
   getPlaceFromCoords,
+  getGeoToken,
 };

@@ -31,7 +31,7 @@ export default class Controller {
     this.reload = reload;
     this.getInitialData();
     this.handleVoiceSearch();
-    setInterval(() => this.getData(this.model.place), 120000);
+    // setInterval(() => this.getData(this.model.place), 120000);
   }
 
   async getInitialData() {
@@ -51,9 +51,9 @@ export default class Controller {
         time,
         icon,
       } = result.currently;
-      const imageQuery = getProperImageQuery(time, icon);
+      const place = await this.model.setGeoData(latitude, longitude, language);
+      const imageQuery = getProperImageQuery(time, icon, place);
       await this.model.setTheme(imageQuery);
-      await this.model.setGeoData(latitude, longitude, language);
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
@@ -85,7 +85,7 @@ export default class Controller {
         time,
         icon,
       } = result.currently;
-      const imageQuery = getProperImageQuery(time, icon);
+      const imageQuery = getProperImageQuery(time, icon, requiredPlace);
       await this.model.setTheme(imageQuery);
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
@@ -141,7 +141,7 @@ export default class Controller {
       temperature,
       place,
     } = this.model;
-    const imageQuery = getProperImageQuery(time, icon);
+    const imageQuery = getProperImageQuery(time, icon, place);
     try {
       await setTheme(imageQuery);
     } catch (err) {

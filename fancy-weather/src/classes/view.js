@@ -36,6 +36,8 @@ export default class View {
     this.container.append(this.controlPanel.container, this.mainbox);
     this.app.append(this.container);
     this.mainbox.style.backgroundImage = `linear-gradient(rgba(63, 69, 81, 0.6), rgba(63, 69, 81, 0.6)), url(${theme})`;
+
+    // promise all?
     this.dayPanel.displayData(data, language, temperature, place);
     this.weekPanel.displayData(data, language, temperature);
     this.controlPanel.display(language, temperature);
@@ -61,15 +63,14 @@ export default class View {
   }
 
   bindTheme(handler) {
-    this.controlPanel.themeButton.addEventListener('click', () => {
-      handler();
-    });
+    this.controlPanel.themeButton.addEventListener('click', handler.bind(null));
   }
 
   bindQuery(handler) {
     this.controlPanel.queryForm.container.addEventListener('submit', (event) => {
       event.preventDefault();
-      handler(this.controlPanel.queryForm.text.value);
+      const placeQuery = this.controlPanel.queryForm.text.value;
+      handler(placeQuery);
     });
   }
 }

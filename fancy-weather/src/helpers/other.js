@@ -51,11 +51,11 @@ const getCurrentTime = (timeZone) => {
   return time.substring(0, time.length - 3);
 };
 
-const getProperImageQuery = (time, weather) => {
+const getProperImageQuery = (time, weather, place) => {
   const dt = new Date(time * 1000);
   const month = dt.getMonth();
   const hour = dt.getHours();
-  return `${weather} ${translations.dayParts[Math.floor(hour / 6)]} ${translations.seasons[month]}`;
+  return `${place} ${translations.seasons[month]} ${translations.dayParts[Math.floor(hour / 6)]} time ${weather}`;
 };
 
 const deleteChild = (element) => {

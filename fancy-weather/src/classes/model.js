@@ -1,8 +1,6 @@
 import {
   getPlaceFromCoords,
-  getWeatherURL,
-  getImageURL,
-  getData,
+  fetchData,
 } from '../helpers/fetch';
 
 import {
@@ -45,6 +43,7 @@ export default class Model {
   async setGeoData(latitude, longitude, language) {
     try {
       const place = await getPlaceFromCoords(latitude, longitude, language);
+      if (!place) throw new Error('setGeoData model error');
       Object.assign(this, {
         position: {
           latitude,
@@ -59,10 +58,14 @@ export default class Model {
   }
 
   async setTheme(theme) {
-    const url = getImageURL(theme);
     try {
-      const result = await getData(url);
-      this.theme = result.urls.regular;
+      const requestBody = { theme };
+      const result = await fetchData('http://localhost:8080/image', requestBody);
+      // if (!result) throw new Error('setTheme model error');
+      // this.theme = result.urls.regular;
+      if (result) {
+        this.theme = result.urls.regular;
+      }
       return this.theme;
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
@@ -70,9 +73,10 @@ export default class Model {
   }
 
   async setWeather(latitude, longitude) {
-    const url = getWeatherURL(latitude, longitude, this.language);
     try {
-      const result = await getData(url);
+      const requestBody = { latitude, longitude, language: this.language };
+      const result = await fetchData('http://localhost:8080/weather', requestBody);
+      if (!result) throw new Error('setWeather model error');
       this.loadedData = result;
       return this.loadedData;
     } catch (err) {
