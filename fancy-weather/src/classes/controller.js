@@ -52,8 +52,8 @@ export default class Controller {
         icon,
       } = result.currently;
       const place = await this.model.setGeoData(latitude, longitude, language);
-      const imageQuery = getProperImageQuery(time, icon, place);
-      await this.model.setTheme(imageQuery);
+      // const imageQuery = getProperImageQuery(time, icon, place);
+      // await this.model.setTheme(imageQuery);
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }

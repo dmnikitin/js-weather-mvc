@@ -61,7 +61,7 @@ async function getPlaceFromCoords(latitude, longitude, language) {
   }
 }
 
-async function getGeoToken() {
+async function getMapToken() {
   try {
     const maptoken = await fetch('http://localhost:8080/map');
     if (!maptoken) throw new Error('getGeoToken error');
@@ -75,5 +75,5 @@ export {
   fetchData,
   getCoordsFromPlace,
   getPlaceFromCoords,
-  getGeoToken,
+  getMapToken,
 };

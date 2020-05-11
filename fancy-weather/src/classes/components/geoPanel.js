@@ -2,7 +2,7 @@ import {
   createElements,
   geoCodesToView,
 } from '../../helpers/other';
-import { getGeoToken } from '../../helpers/fetch';
+import { getMapToken } from '../../helpers/fetch';
 import {
   translations,
 } from '../../assets/data';
@@ -42,8 +42,8 @@ export default class GeoPanel {
   async display(latitude, longitude, language) {
     /* eslint no-undef: 0 */
     try {
-      const { token } = await getGeoToken();
-      mapboxgl.accessToken = token;
+      const { MAP_TOKEN } = await getMapToken();
+      mapboxgl.accessToken = MAP_TOKEN;
       const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
