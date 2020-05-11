@@ -37,6 +37,8 @@ body {
   z-index: 100;
   background-size: cover;
   background-repeat: no-repeat;
+  border: $border;
+  border-radius: 0 0 15px 15px;
 
 
 
@@ -172,7 +174,7 @@ body {
   height: 50px;
   padding: 15px 20px;
   border: $border;
-  border-radius: 15px 15px 0px 0px;
+  border-radius: 15px 15px 0 0;
   font-size: 16px;
 
   @media (min-width: 800px) and (max-width: 1060px) {
@@ -205,43 +207,48 @@ body {
 .query-form {
   grid-area: input;
   margin-top: -2px;
-  display: grid;
-  grid-template-columns: 90% 5% 5%;
+  position: relative;
 
   &__text {
     border: 2px solid $color-dark;
     border-radius: 10px;
-    height: $button-height;
-    width: 100%;
+    position: relative;
+    top:2px;
+    height: 28px;
+    width: 90%;
     padding-left: 10px;
+
+    &::placeholder {
+      position: relative;
+      bottom: 1px;
+    }
   }
 
   button,
   span {
     background: transparent;
-    position: relative;
-    top: 3px;
-    height: 30px;
-    width: 30px;
-    border: 1px solid transparent;
-    border-radius: 30px;
+    position: absolute;
+    top: 7px;
     padding: 0;
+    border: none;
     color: $color-dark;
+    &:hover{
+      color:black;
+      background: transparent;
+    }
   }
 
   &__mic {
-    right: 5vw;
-
+    right: 15%;
     @media (max-width: 700px) {
-      right: 8vw;
+      right: 15%;
     }
   }
 
   &__submit {
-    right: 4vw;
-
+    right: 9%;
     @media (max-width: 700px) {
-      right: 6vw;
+      right: 5%;
     }
   }
 }
@@ -294,10 +301,13 @@ body {
 
 .query-form__mic,
 button {
-  transition: border-color 0.4s, color 0.4s;
-
+  transition: background-color 1s linear;
+  background-color: $color-white;
+  color: $color-light;
   &:hover {
-    animation: button-back-pulse 2s linear infinite;
+    background-color: $color-light;
+    color: $color-white;
+    cursor: pointer;
   }
 }
 
@@ -409,6 +419,10 @@ button::before {
 
 .button-focus {
   background: $color-light;
+  color: $color-white;
+  &:hover{
+    color: $color-white;
+  }
 }
 
 .data-loading {
