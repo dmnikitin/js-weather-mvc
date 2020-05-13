@@ -5,12 +5,6 @@ dotenv.config({
   path: path.join(__dirname, '../.env'),
 });
 
-
-// const {
-//   weatherToken, geoToken, imageToken, mapToken,
-// } = dotenv.config().parsed;
-
-
 module.exports = {
   PORT: process.env.PORT || 8080,
   NODE_ENV: process.env.NODE_ENV,

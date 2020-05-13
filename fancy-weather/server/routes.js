@@ -9,7 +9,6 @@ const {
   IMAGE_TOKEN,
 } = require('./config');
 
-
 router.route('/weather').post(
   catchErrorsDecorator(async (req, res) => {
     const { latitude, longitude, language } = req.body;
@@ -31,9 +30,9 @@ router.route('/image').post(
     const url = `https://api.unsplash.com/photos/random?query=${theme}&client_id=${IMAGE_TOKEN}`;
     const response = await fetch(url);
     if (!response.ok) throw new ExtendedError(403, 'failed');
-    res.send({a: null })
-    // const json = await response.json();
-    // res.send(json);
+    // return null
+    const json = await response.json();
+    res.send(json);
   }),
 );
 
