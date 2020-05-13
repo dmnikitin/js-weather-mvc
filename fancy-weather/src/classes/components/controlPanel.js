@@ -13,17 +13,22 @@ import QueryForm from './queryForm';
 
 export default class ControlPanel {
   constructor() {
-    const [container, themeButton] = createElements({
+    const [container, themeButton, themeIcon] = createElements({
       element: 'section',
       classes: ['control-container'],
     }, {
-      element: 'button',
+      element: 'span',
       classes: ['control-container__button'],
       attrs: {
         id: 'theme-button',
       },
+    }, {
+      element: 'i',
+      classes: ['material-icons'],
+      textContent: 'collections',
     });
 
+    themeButton.append(themeIcon);
     Object.assign(this, {
       container,
       themeButton,
@@ -36,7 +41,7 @@ export default class ControlPanel {
   }
 
   display(language, temperature) {
-    this.themeButton.textContent = translations.layout.theme[language];
+    this.themeButton.setAttribute('title', translations.layout.theme[language]);
     if (temperature === temperatureValues.celsius) {
       this.temperatureButton.input.checked = true;
     } else {
