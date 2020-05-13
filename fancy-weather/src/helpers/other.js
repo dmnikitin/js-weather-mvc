@@ -55,7 +55,7 @@ const getProperImageQuery = (time, weather, place) => {
   const dt = new Date(time * 1000);
   const month = dt.getMonth();
   const hour = dt.getHours();
-  return `${place} ${translations.seasons[month]} ${translations.dayParts[Math.floor(hour / 6)]} time ${weather}`;
+  return `${translations.seasons[month]} ${translations.dayParts[Math.floor(hour / 6)]} ${weather} ${place}`;
 };
 
 const deleteChild = (element) => {
