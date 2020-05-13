@@ -29,15 +29,19 @@ export default class View {
       container,
       mainbox,
     });
+    this.app.append(this.container);
+    this.container.append(this.controlPanel.container, this.mainbox);
   }
 
-  displayData(data, language, temperature, theme, place) {
-    this.mainbox.append(this.dayPanel.container, this.weekPanel.container, this.geoPanel.container);
-    this.container.append(this.controlPanel.container, this.mainbox);
-    this.app.append(this.container);
+  displayTheme(theme) {
     this.mainbox.style.backgroundImage = `linear-gradient(rgba(63, 69, 81, 0.6), rgba(63, 69, 81, 0.6)), url(${theme})`;
+  }
 
-    // promise all?
+  // promise all?
+
+  displayData(data, language, temperature, place) {
+    this.mainbox.append(this.dayPanel.container, this.weekPanel.container, this.geoPanel.container);
+
     this.dayPanel.displayData(data, language, temperature, place);
     this.weekPanel.displayData(data, language, temperature);
     this.controlPanel.display(language, temperature);

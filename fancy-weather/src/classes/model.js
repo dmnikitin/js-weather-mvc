@@ -18,6 +18,7 @@ export default class Model {
     this.language = language;
     this.temperature = temperature;
     this.theme = null;
+    this.setWeather = this.setWeather.bind(this);
     this.setLanguage = this.setLanguage.bind(this);
     this.setTemperature = this.setTemperature.bind(this);
     this.setTheme = this.setTheme.bind(this);
@@ -56,6 +57,8 @@ export default class Model {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
   }
+
+  // setters ??
 
   async setTheme(theme) {
     try {
