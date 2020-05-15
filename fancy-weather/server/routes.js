@@ -14,7 +14,7 @@ router.route('/weather').post(
     const { latitude, longitude, language } = req.body;
     // if (!latitude || !longitude || language) throw new ExtendedError(403, 'not enough data');
     //  res.redirect('/error');
-    const url = `https://api.darksky.net/forecast/${WEATHER_TOKEN}/${latitude},${longitude}?lang=${language}`;
+    const url = encodeURI(`https://api.darksky.net/forecast/${WEATHER_TOKEN}/${latitude},${longitude}?lang=${language}`);
     const response = await fetch(url);
     if (!response.ok) throw new ExtendedError(403, 'failed');
     const json = await response.json();
@@ -27,7 +27,7 @@ router.route('/image').post(
     const { theme } = req.body;
     if (!theme) throw new ExtendedError(403, 'not enough data');
     //  res.redirect('/error');
-    const url = `https://api.unsplash.com/photos/random?query=${theme}&client_id=${IMAGE_TOKEN}`;
+    const url = encodeURI(`https://api.unsplash.com/photos/random?query=${theme}&client_id=${IMAGE_TOKEN}`);
     const response = await fetch(url);
     if (!response.ok) throw new ExtendedError(403, 'failed');
     // return null

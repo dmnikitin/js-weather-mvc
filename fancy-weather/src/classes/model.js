@@ -1,19 +1,9 @@
-import {
-  getPlaceFromCoords,
-  fetchData,
-} from '../helpers/fetch';
-
-import {
-  saveToLocalStorage,
-  getFromLocalStorage,
-} from '../helpers/localstorage';
+import { getPlaceFromCoords, fetchData } from '../helpers/fetch';
+import { saveToLocalStorage, getFromLocalStorage } from '../helpers/localstorage';
 
 export default class Model {
   constructor() {
-    const {
-      temperature,
-      language,
-    } = getFromLocalStorage();
+    const { temperature, language } = getFromLocalStorage();
     this.loadedData = {};
     this.language = language;
     this.temperature = temperature;
@@ -27,18 +17,12 @@ export default class Model {
 
   setLanguage(language) {
     this.language = language;
-    saveToLocalStorage({
-      language,
-      temperature: this.temperature,
-    });
+    saveToLocalStorage({ language, temperature: this.temperature });
   }
 
   setTemperature(temperature) {
     this.temperature = temperature;
-    saveToLocalStorage({
-      temperature,
-      language: this.language,
-    });
+    saveToLocalStorage({ temperature, language: this.language });
   }
 
   async setGeoData(latitude, longitude, language) {
@@ -52,14 +36,10 @@ export default class Model {
     }
   }
 
-  // setters ??
-
   async setTheme(theme) {
     try {
       const requestBody = { theme };
       const result = await fetchData('http://localhost:8080/image', requestBody);
-      // if (!result) throw new Error('setTheme model error');
-      // this.theme = result.urls.regular;
       if (result) {
         this.theme = result.urls.regular;
       }

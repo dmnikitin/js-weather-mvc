@@ -13,6 +13,7 @@
         "sourceType": "module"
     },
     "rules": {
+        "object-curly-newline": 0,
         "linebreak-style": 0,
         "no-alert": 0
     }

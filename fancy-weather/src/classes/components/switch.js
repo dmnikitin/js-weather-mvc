@@ -29,14 +29,7 @@ export default class Switch {
       element: 'span',
       classes: ['onoffswitch-switch'],
     });
-    Object.assign(this, {
-      container,
-      input,
-      label,
-      on,
-      off,
-    });
-
+    Object.assign(this, { container, input, label, on, off });
     this.label.append(this.on, this.off);
     this.container.append(this.input, this.label);
   }

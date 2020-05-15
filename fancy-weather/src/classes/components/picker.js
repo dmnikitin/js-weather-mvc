@@ -21,12 +21,7 @@ export default class Picker {
       textContent: 'be',
     });
     language0.classList.toggle('button-focus');
-    Object.assign(this, {
-      container,
-      language0,
-      language1,
-      language2,
-    });
+    Object.assign(this, { container, language0, language1, language2 });
     this.container.append(language0, language1, language2);
   }
 }

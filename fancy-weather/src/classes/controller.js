@@ -25,27 +25,6 @@ export default class Controller {
     setInterval(this.handleTime, 30000);
   }
 
-  showLoading() {
-    if (this.view.mainbox) deleteChild(this.view.mainbox);
-    this.view.mainbox.append(this.reload);
-  }
-
-  handleTime() {
-    this.view.displayTime();
-  }
-
-  async getPlaceCoordinates(requiredPlace) {
-    try {
-      const { language } = this.model;
-      const { coords: { latitude, longitude } } = requiredPlace
-        ? await getCoordsFromPlace(requiredPlace, language)
-        : await getInitialCoordinates();
-      return { longitude, latitude };
-    } catch (err) {
-      throw new Error(`ERROR(${err.code}): ${err.message}`);
-    }
-  }
-
   async handleData(requiredPlace, updateEverything) {
     try {
       this.showLoading();
@@ -77,6 +56,23 @@ export default class Controller {
     }
   }
 
+  showLoading() {
+    if (this.view.mainbox) deleteChild(this.view.mainbox);
+    this.view.mainbox.append(this.reload);
+  }
+
+  async getPlaceCoordinates(requiredPlace) {
+    try {
+      const { language } = this.model;
+      const { coords: { latitude, longitude } } = requiredPlace
+        ? await getCoordsFromPlace(requiredPlace, language)
+        : await getInitialCoordinates();
+      return { longitude, latitude };
+    } catch (err) {
+      throw new Error(`ERROR(${err.code}): ${err.message}`);
+    }
+  }
+
   async handleLanguage(language) {
     try {
       const { setLanguage } = this.model;
@@ -96,6 +92,10 @@ export default class Controller {
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
+  }
+
+  handleTime() {
+    this.view.displayTime();
   }
 
   handleTemperature(temperature) {
