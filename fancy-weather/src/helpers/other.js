@@ -44,11 +44,17 @@ const formatDate = (time, language, format) => {
 };
 
 const getCurrentTime = (timeZone) => {
-  const dt = new Date().toLocaleString('en-GB', {
-    timeZone,
-  });
-  const time = dt.split(' ')[1];
-  return time.substring(0, time.length - 3);
+  if (timeZone) {
+    const dt = new Date().toLocaleString('en-GB', {
+      timeZone,
+    });
+    const time = dt.split(' ')[1];
+    return time.substring(0, time.length - 3);
+  }
+  const today = new Date();
+  const hours = today.getHours();
+  const minutes = today.getMinutes();
+  return `${hours < 10 ? `0${hours}` : hours} : ${minutes < 10 ? `0${minutes}` : minutes}`;
 };
 
 const getProperImageQuery = (time, weather, place) => {
