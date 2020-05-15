@@ -168,29 +168,17 @@ body {
 }
 
 .control-container {
-  display: grid;
-  grid-template-areas: 'input temp theme lang';
-  grid-template-columns: 70%;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
   height: 35px;
   padding: 25px 20px;
   border: $border;
   border-radius: 15px 15px 0 0;
   font-size: 16px;
 
-  @media (min-width: 800px) and (max-width: 1060px) {
-    grid-template-columns: 60%;
-  }
-
-  @media (min-width: 550px) and (max-width: 800px) {
-    grid-template-columns: 45%;
-  }
-
   @media (min-width: 320px) and (max-width: 550px) {
-    grid-template-columns: auto;
-    grid-template-areas: 'input input input'
-      'temp theme lang';
-    height: 100px;
-    justify-content: center;
+    height: 67px;
   }
 
   &__button {
@@ -216,9 +204,18 @@ body {
 }
 
 .query-form {
-  grid-area: input;
   margin-top: -2px;
   position: relative;
+  width: 37vw;
+
+  @media (min-width: 320px) and (max-width: 550px) {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  @media (min-width: 550px) and (max-width: 800px) {
+    width: 49%;
+  }
 
   &__text {
     border: 2px solid $color-dark;
@@ -226,12 +223,12 @@ body {
     position: relative;
     top:2px;
     height: 28px;
-    width: 90%;
-    padding-left: 10px;
+    width: 100%;
 
     &::placeholder {
       position: relative;
       bottom: 1px;
+      padding-left: 10px;
     }
   }
 
@@ -250,17 +247,11 @@ body {
   }
 
   &__mic {
-    right: 15%;
-    @media (max-width: 700px) {
-      right: 15%;
-    }
+    right: 9%;
   }
 
   &__submit {
-    right: 9%;
-    @media (max-width: 700px) {
-      right: 5%;
-    }
+    right: 2%;
   }
 }
 
@@ -272,7 +263,6 @@ body {
   border-radius: 12px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-area: lang;
   cursor: pointer;
   font-size: 20px;
   text-transform: uppercase;
@@ -340,7 +330,6 @@ button::before {
 }
 
 .onoffswitch {
-  grid-area: temp;
   position: relative;
   width: 60px;
   height: $button-height;
@@ -390,7 +379,6 @@ button::before {
   padding-left: 6px;
   background-color: $color-white;
   color: $color-light;
-
 }
 
 .onoffswitch-inner:after {
