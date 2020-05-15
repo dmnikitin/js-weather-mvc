@@ -45,13 +45,7 @@ export default class Model {
     try {
       const place = await getPlaceFromCoords(latitude, longitude, language);
       if (!place) throw new Error('setGeoData model error');
-      Object.assign(this, {
-        position: {
-          latitude,
-          longitude,
-        },
-        place,
-      });
+      Object.assign(this, { position: { latitude, longitude }, place });
       return place;
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);

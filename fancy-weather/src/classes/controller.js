@@ -1,9 +1,4 @@
-import {
-  createElements,
-  getProperImageQuery,
-  getInitialCoordinates,
-  deleteChild,
-} from '../helpers/other';
+import { createElements, getProperImageQuery, getInitialCoordinates, deleteChild } from '../helpers/other';
 import { getCoordsFromPlace } from '../helpers/fetch';
 
 export default class Controller {
@@ -13,20 +8,21 @@ export default class Controller {
     this.handleTemperature = this.handleTemperature.bind(this);
     this.handleLanguage = this.handleLanguage.bind(this);
     this.handleTheme = this.handleTheme.bind(this);
-    this.showData = this.showData.bind(this);
+    this.handleData = this.handleData.bind(this);
+    this.handleTime = this.handleTime.bind(this);
     this.view.bindTemperature(this.handleTemperature);
     this.view.bindLanguage(this.handleLanguage);
     this.view.bindTheme(this.handleTheme);
-    this.view.bindQuery(this.showData);
+    this.view.bindData(this.handleData);
     const [reload] = createElements({
       element: 'i',
       classes: ['material-icons', 'rotate'],
       textContent: 'loop',
     });
     this.reload = reload;
-    this.showData();
+    this.handleData(null, true);
     this.handleVoiceSearch();
-    // setInterval(() => this.changeTime(), 60000);
+    setInterval(this.handleTime, 30000);
   }
 
   showLoading() {
@@ -34,18 +30,34 @@ export default class Controller {
     this.view.mainbox.append(this.reload);
   }
 
-  // changeTime() {
+  handleTime() {
+    this.view.displayTime();
+  }
 
-  // }
+  async getPlaceCoordinates(requiredPlace) {
+    try {
+      const { language } = this.model;
+      const { coords: { latitude, longitude } } = requiredPlace
+        ? await getCoordsFromPlace(requiredPlace, language)
+        : await getInitialCoordinates();
+      return { longitude, latitude };
+    } catch (err) {
+      throw new Error(`ERROR(${err.code}): ${err.message}`);
+    }
+  }
 
-  async showData(requiredPlace) {
+  async handleData(requiredPlace, updateEverything) {
     try {
       this.showLoading();
-      const { theme, place } = await this.setModelData(requiredPlace || undefined);
+      const { theme, place } = await this.setModelData(requiredPlace);
       const { loadedData, language, temperature } = this.model;
       this.view.mainbox.removeChild(this.reload);
       this.view.displayData(loadedData, language, temperature, place);
-      this.view.displayTheme(theme);
+      this.view.displayTime();
+      if (updateEverything) {
+        this.view.displayTheme(theme);
+        this.view.displayMap(loadedData, language);
+      }
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
@@ -53,12 +65,8 @@ export default class Controller {
 
   async setModelData(requiredPlace) {
     try {
-      const {
-        setWeather, setTheme, setGeoData, language,
-      } = this.model;
-      const { coords: { latitude, longitude } } = requiredPlace
-        ? await getCoordsFromPlace(requiredPlace, language)
-        : await getInitialCoordinates();
+      const { setWeather, setTheme, setGeoData, language } = this.model;
+      const { latitude, longitude } = await this.getPlaceCoordinates(requiredPlace);
       const { currently: { time, icon } } = await setWeather(latitude, longitude);
       const place = await setGeoData(latitude, longitude, language);
       const imageQuery = getProperImageQuery(time, icon, place);
@@ -71,17 +79,9 @@ export default class Controller {
 
   async handleLanguage(language) {
     try {
-      const {
-        setLanguage,
-        setGeoData,
-        position: {
-          latitude,
-          longitude,
-        },
-      } = this.model;
+      const { setLanguage } = this.model;
       setLanguage(language);
-      const place = await setGeoData(latitude, longitude, language);
-      this.showData(place);
+      this.handleData();
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
@@ -89,16 +89,7 @@ export default class Controller {
 
   async handleTheme() {
     try {
-      const {
-        setTheme,
-        loadedData: {
-          currently: {
-            time,
-            icon,
-          },
-        },
-        place,
-      } = this.model;
+      const { setTheme, place, loadedData: { currently: { time, icon } } } = this.model;
       const imageQuery = getProperImageQuery(time, icon, place);
       const theme = await setTheme(imageQuery);
       this.view.displayTheme(theme);
@@ -108,12 +99,7 @@ export default class Controller {
   }
 
   handleTemperature(temperature) {
-    const {
-      setTemperature,
-      loadedData,
-      language,
-      place,
-    } = this.model;
+    const { setTemperature, loadedData, language, place } = this.model;
     setTemperature(temperature);
     this.view.displayData(loadedData, language, temperature, place);
   }
