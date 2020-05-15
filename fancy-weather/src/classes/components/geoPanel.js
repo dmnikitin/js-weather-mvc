@@ -1,11 +1,6 @@
-import {
-  createElements,
-  geoCodesToView,
-} from '../../helpers/other';
+import { createElements, geoCodesToView } from '../../helpers/other';
 import { getMapToken } from '../../helpers/fetch';
-import {
-  translations,
-} from '../../assets/data';
+import { translations } from '../../assets/data';
 
 export default class GeoPanel {
   constructor() {
@@ -15,9 +10,7 @@ export default class GeoPanel {
     }, {
       element: 'div',
       classes: ['map-wrapper'],
-      attrs: {
-        id: 'map',
-      },
+      attrs: { id: 'map' },
     }, {
       element: 'div',
       classes: ['map-text-wrapper'],
@@ -28,13 +21,7 @@ export default class GeoPanel {
       element: 'h3',
       classes: ['map-text-instance'],
     });
-    Object.assign(this, {
-      container,
-      mapWrapper,
-      textWrapper,
-      latitude,
-      longitude,
-    });
+    Object.assign(this, { container, mapWrapper, textWrapper, latitude, longitude });
     this.textWrapper.append(this.latitude, this.longitude);
     this.container.append(this.mapWrapper, this.textWrapper);
   }
@@ -50,9 +37,7 @@ export default class GeoPanel {
         center: [longitude, latitude],
         zoom: 9,
       });
-      map.on('load', () => {
-        map.resize();
-      });
+      map.on('load', () => map.resize());
       this.latitude.textContent = `${translations.layout.geoData.latitude[language]}: ${geoCodesToView(latitude)}`;
       this.longitude.textContent = `${translations.layout.geoData.longitude[language]}: ${geoCodesToView(longitude)}`;
     } catch (err) {

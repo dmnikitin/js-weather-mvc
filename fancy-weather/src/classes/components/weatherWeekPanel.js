@@ -19,11 +19,7 @@ export default class WeatherWeekPanel {
     const nextDays = Array.from({
       length: 3,
     }, (value, index) => index + 2);
-    const canvasData = {
-      canvasHeight: 50,
-      canvasWidth: 50,
-    };
-
+    const canvasData = { canvasHeight: 50, canvasWidth: 50 };
     this.container = container;
     nextDays.forEach((day) => {
       const [wdContainer, wdCanvas, wdTextWrap, wdText, wdTemp] = createElements({
@@ -32,12 +28,7 @@ export default class WeatherWeekPanel {
       }, {
         element: 'canvas',
         classes: ['weekday-container__canvas'],
-        attrs: {
-          id: `icon${day}`,
-          data: day,
-          height: canvasData.canvasHeight,
-          width: canvasData.canvasWidth,
-        },
+        attrs: { id: `icon${day}`, data: day, height: canvasData.canvasHeight, width: canvasData.canvasWidth },
       }, {
         element: 'article',
         classes: ['weekday-container__text-wrapper'],
@@ -55,9 +46,7 @@ export default class WeatherWeekPanel {
   }
 
   displayData(json, language, temperatureSystem) {
-    const skycons = new Skycons({
-      color: 'white',
-    });
+    const skycons = new Skycons({ color: 'white' });
     [...this.container.children].forEach((element) => {
       const canvas = element.querySelector('.weekday-container__canvas');
       const value = canvas.getAttribute('data');

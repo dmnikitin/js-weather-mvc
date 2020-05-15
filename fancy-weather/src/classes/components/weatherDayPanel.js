@@ -1,17 +1,6 @@
 import Skycons from 'skycons-modern';
-import {
-  createElements,
-  toCelcius,
-  formatDate,
-  getCurrentTime,
-} from '../../helpers/other';
-
-import {
-  temperatureValues,
-  translations,
-  formatWeekDays,
-  languages,
-} from '../../assets/data';
+import { createElements, toCelcius, formatDate, getCurrentTime } from '../../helpers/other';
+import { temperatureValues, translations, formatWeekDays, languages } from '../../assets/data';
 
 export default class WeatherDayPanel {
   constructor() {
@@ -21,11 +10,7 @@ export default class WeatherDayPanel {
     }, {
       element: 'canvas',
       classes: ['day-container__canvas'],
-      attrs: {
-        id: 'mainWeatherIcon',
-        height: 200,
-        width: 200,
-      },
+      attrs: { id: 'mainWeatherIcon', height: 200, width: 200 },
     }, {
       element: 'div',
       classes: ['day-container__text-wrapper'],

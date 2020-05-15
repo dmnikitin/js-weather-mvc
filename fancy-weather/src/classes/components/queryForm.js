@@ -31,12 +31,7 @@ export default class QueryForm {
     });
     searchButton.append(searchIcon);
     micButton.append(micIcon);
-    Object.assign(this, {
-      container,
-      text,
-      micButton,
-      searchButton,
-    });
+    Object.assign(this, { container, text, micButton, searchButton });
 
     this.container.append(this.text, this.micButton, this.searchButton);
   }

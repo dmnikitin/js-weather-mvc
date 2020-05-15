@@ -2,14 +2,8 @@ import ControlPanel from './components/controlPanel';
 import WeatherDayPanel from './components/weatherDayPanel';
 import WeatherWeekPanel from './components/weatherWeekPanel';
 import GeoPanel from './components/geoPanel';
-import {
-  createElements,
-  getElement,
-} from '../helpers/other';
-
-import {
-  temperatureValues,
-} from '../assets/data';
+import { createElements, getElement } from '../helpers/other';
+import { temperatureValues } from '../assets/data';
 
 export default class View {
   constructor() {
@@ -25,10 +19,7 @@ export default class View {
       classes: ['mainbox'],
     });
     this.app = getElement('#root');
-    Object.assign(this, {
-      container,
-      mainbox,
-    });
+    Object.assign(this, { container, mainbox });
     this.app.append(this.container);
     this.container.append(this.controlPanel.container, this.mainbox);
   }
@@ -54,10 +45,7 @@ export default class View {
 
   bindTemperature(handler) {
     this.controlPanel.temperatureButton.container.addEventListener('change', (event) => {
-      const {
-        celsius,
-        fahrenheit,
-      } = temperatureValues;
+      const { celsius, fahrenheit } = temperatureValues;
       const temperature = event.target.checked ? celsius : fahrenheit;
       handler(temperature);
     });
