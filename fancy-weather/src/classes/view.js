@@ -37,14 +37,18 @@ export default class View {
     this.mainbox.style.backgroundImage = `linear-gradient(rgba(63, 69, 81, 0.6), rgba(63, 69, 81, 0.6)), url(${theme})`;
   }
 
-  // promise all?
+  displayTime() {
+    this.dayPanel.displayTime();
+  }
 
   displayData(data, language, temperature, place) {
     this.mainbox.append(this.dayPanel.container, this.weekPanel.container, this.geoPanel.container);
-
     this.dayPanel.displayData(data, language, temperature, place);
     this.weekPanel.displayData(data, language, temperature);
     this.controlPanel.display(language, temperature);
+  }
+
+  displayMap(data, language) {
     this.geoPanel.display(data.latitude, data.longitude, language);
   }
 
@@ -70,11 +74,11 @@ export default class View {
     this.controlPanel.themeButton.addEventListener('click', handler.bind(null));
   }
 
-  bindQuery(handler) {
+  bindData(handler) {
     this.controlPanel.queryForm.container.addEventListener('submit', (event) => {
       event.preventDefault();
       const placeQuery = this.controlPanel.queryForm.text.value;
-      handler(placeQuery);
+      handler(placeQuery, true);
     });
   }
 }
