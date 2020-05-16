@@ -1,6 +1,6 @@
 import { createElements, geoCodesToView } from '../../helpers/other';
 import { getMapToken } from '../../helpers/fetch';
-import { translations } from '../../assets/data';
+import { translations, errors } from '../../assets/data';
 
 export default class GeoPanel {
   constructor() {
@@ -41,7 +41,7 @@ export default class GeoPanel {
       this.latitude.textContent = `${translations.layout.geoData.latitude[language]}: ${geoCodesToView(latitude)}`;
       this.longitude.textContent = `${translations.layout.geoData.longitude[language]}: ${geoCodesToView(longitude)}`;
     } catch (err) {
-      throw new Error(`ERROR(${err.code}): ${err.message}`);
+      throw new Error(errors.MAP_LOADING_ERROR);
     }
   }
 }

@@ -2,9 +2,10 @@ import ControlPanel from './components/controlPanel';
 import WeatherDayPanel from './components/weatherDayPanel';
 import WeatherWeekPanel from './components/weatherWeekPanel';
 import GeoPanel from './components/geoPanel';
-import { createElements, getElement, getCurrentTime } from '../helpers/other';
-import { temperatureValues } from '../assets/data';
+import { createElements, getElement, getCurrentTime, getCurrentDate, deleteChild } from '../helpers/other';
+import { temperatureValues, errors } from '../assets/data';
 
+const { GEODATA_LOADING_ERROR, WEATHER_LOADING_ERROR, THEME_LOADING_ERROR, MESSAGE } = errors;
 export default class View {
   constructor() {
     this.controlPanel = new ControlPanel();
@@ -24,12 +25,36 @@ export default class View {
     this.container.append(this.controlPanel.container, this.mainbox);
   }
 
+  displayError(status) {
+    switch (status) {
+      case THEME_LOADING_ERROR: {
+        alert(`${MESSAGE}: ${THEME_LOADING_ERROR}`);
+        this.mainbox.style.backgroundImage = 'linear-gradient(rgba(63, 69, 81, 0.6), rgba(63, 69, 81, 0.6))';
+        break;
+      }
+      case WEATHER_LOADING_ERROR: {
+        deleteChild(this.mainbox);
+        this.mainbox.textContent = `${MESSAGE}: ${WEATHER_LOADING_ERROR}`;
+        break;
+      }
+      case GEODATA_LOADING_ERROR: {
+        deleteChild(this.mainbox);
+        this.mainbox.textContent = `${MESSAGE}: ${GEODATA_LOADING_ERROR}`;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
   displayTheme(theme) {
     this.mainbox.style.backgroundImage = `linear-gradient(rgba(63, 69, 81, 0.6), rgba(63, 69, 81, 0.6)), url(${theme})`;
   }
 
   displayTime(timezone) {
     const updatedTime = getCurrentTime(timezone);
+    console.log(getCurrentDate(timezone, 'en'));
     this.dayPanel.displayTime(updatedTime);
   }
 
@@ -40,8 +65,8 @@ export default class View {
     this.controlPanel.display(language, temperature);
   }
 
-  displayMap(data, language) {
-    this.geoPanel.display(data.latitude, data.longitude, language);
+  async displayMap(data, language) {
+    await this.geoPanel.display(data.latitude, data.longitude, language);
   }
 
   bindTemperature(handler) {
@@ -63,11 +88,11 @@ export default class View {
     this.controlPanel.themeButton.addEventListener('click', handler.bind(null));
   }
 
-  bindData(handler) {
+  bindData(dataHandler) {
     this.controlPanel.queryForm.container.addEventListener('submit', (event) => {
       event.preventDefault();
       const placeQuery = this.controlPanel.queryForm.text.value;
-      handler(placeQuery, true);
+      dataHandler(placeQuery);
     });
   }
 }

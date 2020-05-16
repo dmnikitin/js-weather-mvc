@@ -1,5 +1,8 @@
 import { getPlaceFromCoords, fetchData } from '../helpers/fetch';
 import { saveToLocalStorage, getFromLocalStorage } from '../helpers/localstorage';
+import { errors } from '../assets/data';
+
+const { GEODATA_LOADING_ERROR, WEATHER_LOADING_ERROR, THEME_LOADING_ERROR } = errors;
 
 export default class Model {
   constructor() {
@@ -14,31 +17,29 @@ export default class Model {
     this.setTemperature = this.setTemperature.bind(this);
     this.setTheme = this.setTheme.bind(this);
     this.setGeoData = this.setGeoData.bind(this);
-    this.setTimeZone = this.setTimeZone.bind(this);
+    this.setTimezone = this.setTimezone.bind(this);
   }
 
-  setLanguage(language) {
-    this.language = language;
-    saveToLocalStorage({ language, temperature: this.temperature });
-  }
-
-  setTemperature(temperature) {
-    this.temperature = temperature;
-    saveToLocalStorage({ temperature, language: this.language });
-  }
-
-  setTimeZone(timezone) {
-    this.timezone = timezone;
+  async setWeather(latitude, longitude) {
+    try {
+      const requestBody = { latitude, longitude, language: this.language };
+      const result = await fetchData('http://localhost:8080/weather', requestBody);
+      if (!result) throw new Error(WEATHER_LOADING_ERROR);
+      this.loadedData = result;
+      return this.loadedData;
+    } catch (err) {
+      throw new Error(WEATHER_LOADING_ERROR);
+    }
   }
 
   async setGeoData(latitude, longitude, language) {
     try {
       const place = await getPlaceFromCoords(latitude, longitude, language);
-      if (!place) throw new Error('setGeoData model error');
+      if (!place) throw new Error(GEODATA_LOADING_ERROR);
       Object.assign(this, { position: { latitude, longitude }, place });
       return place;
     } catch (err) {
-      throw new Error(`ERROR(${err.code}): ${err.message}`);
+      throw new Error(GEODATA_LOADING_ERROR);
     }
   }
 
@@ -51,19 +52,21 @@ export default class Model {
       }
       return this.theme;
     } catch (err) {
-      throw new Error(`ERROR(${err.code}): ${err.message}`);
+      throw new Error(THEME_LOADING_ERROR);
     }
   }
 
-  async setWeather(latitude, longitude) {
-    try {
-      const requestBody = { latitude, longitude, language: this.language };
-      const result = await fetchData('http://localhost:8080/weather', requestBody);
-      if (!result) throw new Error('setWeather model error');
-      this.loadedData = result;
-      return this.loadedData;
-    } catch (err) {
-      throw new Error(`ERROR(${err.code}): ${err.message}`);
-    }
+  setLanguage(language) {
+    this.language = language;
+    saveToLocalStorage({ language, temperature: this.temperature });
+  }
+
+  setTemperature(temperature) {
+    this.temperature = temperature;
+    saveToLocalStorage({ temperature, language: this.language });
+  }
+
+  setTimezone(timezone) {
+    this.timezone = timezone;
   }
 }
