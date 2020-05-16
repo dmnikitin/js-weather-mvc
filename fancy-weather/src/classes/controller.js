@@ -15,7 +15,7 @@ export default class Controller {
     this.view.bindTemperature(this.handleTemperature);
     this.view.bindLanguage(this.handleLanguage);
     this.view.bindTheme(this.handleTheme);
-    this.view.bindData(this.handleData);
+    this.view.bindData(this.handleData, this.handleMap, this.handleTheme);
     this.init();
   }
 
@@ -64,11 +64,7 @@ export default class Controller {
       setTimezone(loadedData.timezone);
       this.displayReloadButton(true);
       this.view.displayData(loadedData, language, temperature, place);
-      this.view.displayTime(loadedData.timezone);
-      if (requiredPlace) {
-        await this.handleMap();
-        this.handleTheme();
-      }
+      this.view.displayTime(loadedData.timezone, language);
     } catch (err) {
       this.view.displayError(err.message);
       throw new Error(err.message);
@@ -99,8 +95,8 @@ export default class Controller {
   }
 
   handleTime() {
-    const { timezone } = this.model;
-    this.view.displayTime(timezone);
+    const { timezone, language } = this.model;
+    this.view.displayTime(timezone, language);
   }
 
   async handleMap() {
@@ -113,10 +109,7 @@ export default class Controller {
     const recognition = new SpeechRecognition();
     recognition.interimResults = true;
     recognition.maxAlternatives = 1;
-    const {
-      micButton,
-      text,
-    } = this.view.controlPanel.queryForm;
+    const { micButton, text } = this.view.controlPanel.queryForm;
     micButton.addEventListener('click', () => {
       recognition.lang = this.model.language;
       recognition.start();

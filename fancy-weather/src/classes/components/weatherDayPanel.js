@@ -1,6 +1,6 @@
 import Skycons from 'skycons-modern';
-import { createElements, toCelcius, formatDate } from '../../helpers/other';
-import { temperatureValues, translations, formatWeekDays, languages } from '../../assets/data';
+import { createElements, toCelcius } from '../../helpers/other';
+import { temperatureValues, translations, languages } from '../../assets/data';
 
 export default class WeatherDayPanel {
   constructor() {
@@ -45,16 +45,15 @@ export default class WeatherDayPanel {
     this.container.append(this.canvas, this.textWrapper);
   }
 
-  displayData(json, language, temperatureSystem, place) {
+  displayData(data, language, temperatureSystem, place) {
     const {
-      currently: { time, summary, temperature, apparentTemperature, humidity, windSpeed, icon },
-    } = json;
+      currently: { summary, temperature, apparentTemperature, humidity, windSpeed, icon },
+    } = data;
     const skycons = new Skycons({ color: 'white' });
     const temperatureString = temperatureSystem === temperatureValues.celsius ? `${toCelcius(temperature).toFixed(0)} °C` : `${temperature.toFixed(0)} °F`;
     const apparentString = temperatureSystem === temperatureValues.celsius ? `${toCelcius(apparentTemperature).toFixed(0)} °C` : `${apparentTemperature.toFixed(0)} °F`;
     const windSpeedParts = language === languages.en ? 'm/s' : 'м/c';
     this.place.textContent = place;
-    this.currDay.textContent = formatDate(time, language, formatWeekDays.fullName);
     this.sum.textContent = `${summary}, ${temperatureString}`;
     this.apparent.textContent = `${translations.layout.weather.apparent[language]}: ${apparentString}`;
     this.wind.textContent = `${translations.layout.weather.windSpeed[language]}: ${windSpeed} ${windSpeedParts}`;
@@ -63,7 +62,8 @@ export default class WeatherDayPanel {
     skycons.play();
   }
 
-  displayTime(time) {
+  displayTime(time, dateLong) {
+    this.currDay.textContent = dateLong;
     this.currTime.textContent = time;
   }
 }

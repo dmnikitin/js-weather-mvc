@@ -2,7 +2,7 @@ import ControlPanel from './components/controlPanel';
 import WeatherDayPanel from './components/weatherDayPanel';
 import WeatherWeekPanel from './components/weatherWeekPanel';
 import GeoPanel from './components/geoPanel';
-import { createElements, getElement, getCurrentTime, getCurrentDate, deleteChild } from '../helpers/other';
+import { createElements, getElement, getCurrentTime, deleteChild } from '../helpers/other';
 import { temperatureValues, errors } from '../assets/data';
 
 const { GEODATA_LOADING_ERROR, WEATHER_LOADING_ERROR, THEME_LOADING_ERROR, MESSAGE } = errors;
@@ -52,10 +52,9 @@ export default class View {
     this.mainbox.style.backgroundImage = `linear-gradient(rgba(63, 69, 81, 0.6), rgba(63, 69, 81, 0.6)), url(${theme})`;
   }
 
-  displayTime(timezone) {
-    const updatedTime = getCurrentTime(timezone);
-    console.log(getCurrentDate(timezone, 'en'));
-    this.dayPanel.displayTime(updatedTime);
+  displayTime(timezone, language) {
+    const { time, dateLong } = getCurrentTime(timezone, language);
+    this.dayPanel.displayTime(time, dateLong);
   }
 
   displayData(data, language, temperature, place) {
@@ -69,30 +68,32 @@ export default class View {
     await this.geoPanel.display(data.latitude, data.longitude, language);
   }
 
-  bindTemperature(handler) {
+  bindTemperature(temperatureHandler) {
     this.controlPanel.temperatureButton.container.addEventListener('change', (event) => {
       const { celsius, fahrenheit } = temperatureValues;
       const temperature = event.target.checked ? celsius : fahrenheit;
-      handler(temperature);
+      temperatureHandler(temperature);
     });
   }
 
-  bindLanguage(handler) {
+  bindLanguage(languageHandler) {
     this.controlPanel.languageButton.container.addEventListener('click', (event) => {
       const language = event.target.textContent;
-      handler(language);
+      languageHandler(language);
     });
   }
 
-  bindTheme(handler) {
-    this.controlPanel.themeButton.addEventListener('click', handler.bind(null));
+  bindTheme(themeHandler) {
+    this.controlPanel.themeButton.addEventListener('click', themeHandler.bind(null));
   }
 
-  bindData(dataHandler) {
-    this.controlPanel.queryForm.container.addEventListener('submit', (event) => {
+  bindData(dataHandler, mapHandler, themeHandler) {
+    this.controlPanel.queryForm.container.addEventListener('submit', async (event) => {
       event.preventDefault();
       const placeQuery = this.controlPanel.queryForm.text.value;
-      dataHandler(placeQuery);
+      await dataHandler(placeQuery);
+      await mapHandler();
+      await themeHandler();
     });
   }
 }
