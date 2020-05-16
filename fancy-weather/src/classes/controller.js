@@ -83,9 +83,9 @@ export default class Controller {
   }
 
   handleLanguage(language) {
-    const { setLanguage } = this.model;
+    const { setLanguage, place } = this.model;
     setLanguage(language);
-    this.handleData();
+    this.handleData(place);
   }
 
   handleTemperature(temperature) {
