@@ -21,6 +21,7 @@ const createElements = (...args) => args.map((e) => {
 });
 
 const toCelcius = (val) => ((val - 32) * 5) / 9;
+
 const formatDate = (time, language, format) => {
   const dt = new Date(time * 1000);
   const day = dt.getDate();

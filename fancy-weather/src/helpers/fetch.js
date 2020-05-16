@@ -1,6 +1,4 @@
-import {
-  translations,
-} from '../assets/data';
+import { translations } from '../assets/data';
 
 const headers = {
   method: 'POST',
@@ -58,9 +56,4 @@ async function getMapToken() {
   }
 }
 
-export {
-  fetchData,
-  getCoordsFromPlace,
-  getPlaceFromCoords,
-  getMapToken,
-};
+export { fetchData, getCoordsFromPlace, getPlaceFromCoords, getMapToken };
