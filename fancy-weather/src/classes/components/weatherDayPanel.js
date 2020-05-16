@@ -1,5 +1,5 @@
 import Skycons from 'skycons-modern';
-import { createElements, toCelcius, formatDate, getCurrentTime } from '../../helpers/other';
+import { createElements, toCelcius, formatDate } from '../../helpers/other';
 import { temperatureValues, translations, formatWeekDays, languages } from '../../assets/data';
 
 export default class WeatherDayPanel {
@@ -63,7 +63,7 @@ export default class WeatherDayPanel {
     skycons.play();
   }
 
-  displayTime() {
-    this.currTime.textContent = getCurrentTime();
+  displayTime(time) {
+    this.currTime.textContent = time;
   }
 }

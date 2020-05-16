@@ -8,11 +8,13 @@ export default class Model {
     this.language = language;
     this.temperature = temperature;
     this.theme = null;
+    this.timezone = null;
     this.setWeather = this.setWeather.bind(this);
     this.setLanguage = this.setLanguage.bind(this);
     this.setTemperature = this.setTemperature.bind(this);
     this.setTheme = this.setTheme.bind(this);
     this.setGeoData = this.setGeoData.bind(this);
+    this.setTimeZone = this.setTimeZone.bind(this);
   }
 
   setLanguage(language) {
@@ -23,6 +25,10 @@ export default class Model {
   setTemperature(temperature) {
     this.temperature = temperature;
     saveToLocalStorage({ temperature, language: this.language });
+  }
+
+  setTimeZone(timezone) {
+    this.timezone = timezone;
   }
 
   async setGeoData(latitude, longitude, language) {

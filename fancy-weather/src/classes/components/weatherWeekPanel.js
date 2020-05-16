@@ -52,7 +52,7 @@ export default class WeatherWeekPanel {
       const value = canvas.getAttribute('data');
       const day = element.querySelectorAll('.weekday-container__text-instance')[0];
       const dayTemperature = element.querySelectorAll('.weekday-container__text-instance')[1];
-      const dailyTemp = json.daily.data[value];
+      const dailyTemp = json.daily.data[value - 1];
       const average = (dailyTemp.temperatureHigh + dailyTemp.temperatureLow) / 2;
       const temperatureString = temperatureSystem === temperatureValues.celsius ? `${toCelcius(average).toFixed(0)} °C` : `${average.toFixed(0)} °F`;
       day.textContent = formatDate(dailyTemp.time, language, formatWeekDays.fullName);

@@ -28,18 +28,8 @@ async function getCoordsFromPlace(place, language) {
     const requestBody = { place, language };
     const data = await fetchData('http://localhost:8080/place', requestBody);
     if (!data) throw new Error('getCoordsFromPlace error');
-    const {
-      geometry: {
-        lat: latitude,
-        lng: longitude,
-      },
-    } = data.results[0];
-    return ({
-      coords: {
-        latitude,
-        longitude,
-      },
-    });
+    const { geometry: { lat: latitude, lng: longitude } } = data.results[0];
+    return ({ coords: { latitude, longitude } });
   } catch (err) {
     alert(translations.layout.inputError[language]);
     throw new Error(`ERROR(${err.code}): ${err.message}`);
@@ -51,10 +41,7 @@ async function getPlaceFromCoords(latitude, longitude, language) {
     const requestBody = { place: `${latitude},${longitude}`, language };
     const data = await fetchData('http://localhost:8080/place', requestBody);
     if (!data) throw new Error('getPlaceFromCoords error');
-    const {
-      city,
-      country,
-    } = data.results[0].components;
+    const { city, country } = data.results[0].components;
     return `${city}, ${country}`;
   } catch (err) {
     throw new Error(`ERROR(${err.code}): ${err.message}`);

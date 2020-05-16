@@ -2,7 +2,7 @@ import ControlPanel from './components/controlPanel';
 import WeatherDayPanel from './components/weatherDayPanel';
 import WeatherWeekPanel from './components/weatherWeekPanel';
 import GeoPanel from './components/geoPanel';
-import { createElements, getElement } from '../helpers/other';
+import { createElements, getElement, getCurrentTime } from '../helpers/other';
 import { temperatureValues } from '../assets/data';
 
 export default class View {
@@ -28,8 +28,9 @@ export default class View {
     this.mainbox.style.backgroundImage = `linear-gradient(rgba(63, 69, 81, 0.6), rgba(63, 69, 81, 0.6)), url(${theme})`;
   }
 
-  displayTime() {
-    this.dayPanel.displayTime();
+  displayTime(timezone) {
+    const updatedTime = getCurrentTime(timezone);
+    this.dayPanel.displayTime(updatedTime);
   }
 
   displayData(data, language, temperature, place) {

@@ -22,17 +22,22 @@ export default class Controller {
     this.reload = reload;
     this.handleData(null, true);
     this.handleVoiceSearch();
-    setInterval(this.handleTime, 30000);
+    setInterval(this.handleTime, 60000);
+  }
+
+  showLoading() {
+    if (this.view.mainbox) deleteChild(this.view.mainbox);
+    this.view.mainbox.append(this.reload);
   }
 
   async handleData(requiredPlace, updateEverything) {
     try {
       this.showLoading();
-      const { theme, place } = await this.setModelData(requiredPlace);
+      const { theme, place, timezone } = await this.setModelData(requiredPlace);
       const { loadedData, language, temperature } = this.model;
       this.view.mainbox.removeChild(this.reload);
       this.view.displayData(loadedData, language, temperature, place);
-      this.view.displayTime();
+      this.view.displayTime(timezone);
       if (updateEverything) {
         this.view.displayTheme(theme);
         this.view.displayMap(loadedData, language);
@@ -44,21 +49,17 @@ export default class Controller {
 
   async setModelData(requiredPlace) {
     try {
-      const { setWeather, setTheme, setGeoData, language } = this.model;
+      const { setWeather, setTheme, setGeoData, setTimeZone, language } = this.model;
       const { latitude, longitude } = await this.getPlaceCoordinates(requiredPlace);
-      const { currently: { time, icon } } = await setWeather(latitude, longitude);
+      const { timezone, currently: { time, icon } } = await setWeather(latitude, longitude);
       const place = await setGeoData(latitude, longitude, language);
       const imageQuery = getProperImageQuery(time, icon, place);
       const theme = await setTheme(imageQuery);
-      return { theme, place };
+      setTimeZone(timezone);
+      return { theme, place, timezone };
     } catch (err) {
       throw new Error(`ERROR(${err.code}): ${err.message}`);
     }
-  }
-
-  showLoading() {
-    if (this.view.mainbox) deleteChild(this.view.mainbox);
-    this.view.mainbox.append(this.reload);
   }
 
   async getPlaceCoordinates(requiredPlace) {
@@ -95,7 +96,8 @@ export default class Controller {
   }
 
   handleTime() {
-    this.view.displayTime();
+    const { timezone } = this.model;
+    this.view.displayTime(timezone);
   }
 
   handleTemperature(temperature) {

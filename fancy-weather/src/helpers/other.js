@@ -1,20 +1,11 @@
-import {
-  translations,
-} from '../assets/data';
+import { translations } from '../assets/data';
 
 const getInitialCoordinates = () => new Promise((resolve, reject) => {
-  const options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0,
-  };
+  const options = { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 };
   navigator.geolocation.getCurrentPosition(resolve, reject, options);
 });
 
-const getElement = (selector) => {
-  const element = document.querySelector(selector);
-  return element;
-};
+const getElement = (selector) => document.querySelector(selector);
 
 const createElements = (...args) => args.map((e) => {
   const element = document.createElement(e.element);
@@ -22,14 +13,10 @@ const createElements = (...args) => args.map((e) => {
   if (Object.prototype.hasOwnProperty.call(e, 'attrs')) {
     const keys = Object.keys(e.attrs);
     keys.forEach((key) => {
-      if (keys.includes(key)) {
-        element.setAttribute(key, e.attrs[key]);
-      }
+      if (keys.includes(key)) element.setAttribute(key, e.attrs[key]);
     });
   }
-  if (Object.prototype.hasOwnProperty.call(e, 'textContent')) {
-    element.textContent = e.textContent;
-  }
+  if (Object.prototype.hasOwnProperty.call(e, 'textContent')) element.textContent = e.textContent;
   return element;
 });
 
@@ -44,17 +31,9 @@ const formatDate = (time, language, format) => {
 };
 
 const getCurrentTime = (timeZone) => {
-  if (timeZone) {
-    const dt = new Date().toLocaleString('en-GB', {
-      timeZone,
-    });
-    const time = dt.split(' ')[1];
-    return time.substring(0, time.length - 3);
-  }
-  const today = new Date();
-  const hours = today.getHours();
-  const minutes = today.getMinutes();
-  return `${hours < 10 ? `0${hours}` : hours} : ${minutes < 10 ? `0${minutes}` : minutes}`;
+  const dt = new Date().toLocaleString('en-GB', { timeZone });
+  const time = dt.split(' ')[1];
+  return time.substring(0, time.length - 3);
 };
 
 const getProperImageQuery = (time, weather, place) => {
