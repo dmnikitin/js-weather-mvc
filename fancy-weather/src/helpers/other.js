@@ -1,4 +1,4 @@
-import { translations } from '../assets/data';
+import { translations, formatWeekDays } from '../assets/data';
 
 const getInitialCoordinates = () => new Promise((resolve, reject) => {
   const options = { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 };
@@ -24,17 +24,24 @@ const toCelcius = (val) => ((val - 32) * 5) / 9;
 
 const formatDate = (time, language, format) => {
   const dt = new Date(time * 1000);
-  const day = dt.getDate();
+  const day = dt.getDate() - 1;
   const month = dt.getMonth();
   const weekDay = translations.weekday[format][language][dt.getUTCDay()];
   const monthArray = translations.month[language];
   return `${monthArray[month]}, ${day}, ${weekDay}`;
 };
 
-const getCurrentTime = (timeZone) => {
+const getCurrentTime = (timeZone, language) => {
   const dt = new Date().toLocaleString('en-GB', { timeZone });
-  const time = dt.split(' ')[1];
-  return time.substring(0, time.length - 3);
+  const wd = new Date().toLocaleString('en-GB', { timeZone, weekday: 'long' });
+  const wdIndex = translations.weekday.all.findIndex((el) => el === wd);
+  const weekDayLong = translations.weekday[formatWeekDays.fullName][language][wdIndex];
+  const [dtShort, timeShort] = dt.split(' ');
+  const result = dtShort.split('/');
+  const monthArray = translations.month[language];
+  const time = timeShort.substring(0, timeShort.length - 3);
+  const dateLong = `${monthArray[parseInt(result[1] - 1, 10)]}, ${result[0]}, ${weekDayLong}`;
+  return { time, dateLong };
 };
 
 const getProperImageQuery = (time, weather, place) => {

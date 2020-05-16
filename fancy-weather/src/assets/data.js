@@ -57,7 +57,7 @@ const translations = {
     inputError: {
       en: 'please input existing place',
       ru: 'введите корректное название населенного пункта',
-      be: 'увядзіце карэктны населен пункт',
+      be: 'увядзіце карэктны населены пункт',
     },
   },
   weekday: {
@@ -94,9 +94,21 @@ const translations = {
   dayParts: ['night', 'morning', 'day', 'evening sky'],
 };
 
+const errors = {
+  THEME_LOADING_ERROR: 'THEME_LOADING_ERROR',
+  WEATHER_LOADING_ERROR: 'WEATHER_LOADING_ERROR',
+  GEODATA_LOADING_ERROR: 'GEODATA_LOADING_ERROR',
+  MAP_LOADING_ERROR: 'MAP_LOADING_ERROR',
+  FETCH_DATA_ERROR: 'FETCH_DATA_ERROR',
+  VOICE_RECOGNITION_ERROR: 'VOICE_RECOGNITION_ERROR',
+  OTHER_ERROR: 'OTHER_ERROR',
+  MESSAGE: 'Sorry, there was an error',
+};
+
 export {
   temperatureValues,
   languages,
   translations,
   formatWeekDays,
+  errors,
 };
