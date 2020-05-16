@@ -61,6 +61,7 @@ const translations = {
     },
   },
   weekday: {
+    all: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     full: {
       en: ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
       ru: ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'],
@@ -91,7 +92,7 @@ const translations = {
     10: 'fall',
     11: 'winter',
   },
-  dayParts: ['night', 'morning', 'day', 'evening sky'],
+  dayParts: ['night', 'morning', 'day', 'sunset'],
 };
 
 const errors = {
