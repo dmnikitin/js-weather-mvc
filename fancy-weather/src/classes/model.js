@@ -11,19 +11,17 @@ export default class Model {
     this.language = language;
     this.temperature = temperature;
     this.theme = null;
-    this.timezone = null;
     this.setWeather = this.setWeather.bind(this);
     this.setLanguage = this.setLanguage.bind(this);
     this.setTemperature = this.setTemperature.bind(this);
     this.setTheme = this.setTheme.bind(this);
     this.setGeoData = this.setGeoData.bind(this);
-    this.setTimezone = this.setTimezone.bind(this);
   }
 
   async setWeather(latitude, longitude) {
     try {
       const requestBody = { latitude, longitude, language: this.language };
-      const result = await fetchData('http://localhost:8080/weather', requestBody);
+      const result = await fetchData('/weather', requestBody);
       if (!result) throw new Error(WEATHER_LOADING_ERROR);
       this.loadedData = result;
       return this.loadedData;
@@ -46,7 +44,7 @@ export default class Model {
   async setTheme(theme) {
     try {
       const requestBody = { theme };
-      const result = await fetchData('http://localhost:8080/image', requestBody);
+      const result = await fetchData('/image', requestBody);
       if (result) {
         this.theme = result.urls.regular;
       }
@@ -64,9 +62,5 @@ export default class Model {
   setTemperature(temperature) {
     this.temperature = temperature;
     saveToLocalStorage({ temperature, language: this.language });
-  }
-
-  setTimezone(timezone) {
-    this.timezone = timezone;
   }
 }

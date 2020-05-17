@@ -57,11 +57,10 @@ export default class Controller {
   async handleData(requiredPlace) {
     try {
       this.displayReloadButton(false);
-      const { setWeather, setTimezone, setGeoData, language, temperature } = this.model;
+      const { setWeather, setGeoData, language, temperature } = this.model;
       const { latitude, longitude } = await this.getPlaceCoordinates(requiredPlace);
       const loadedData = await setWeather(latitude, longitude);
       const place = await setGeoData(latitude, longitude, language);
-      setTimezone(loadedData.timezone);
       this.displayReloadButton(true);
       this.view.displayData(loadedData, language, temperature, place);
       this.view.displayTime(loadedData.timezone, language);
@@ -73,8 +72,8 @@ export default class Controller {
 
   async handleTheme() {
     try {
-      const { setTheme, place, loadedData: { currently: { time, icon } } } = this.model;
-      const imageQuery = getProperImageQuery(time, icon, place);
+      const { setTheme, place, loadedData: { timezone, currently: { time, icon } } } = this.model;
+      const imageQuery = getProperImageQuery(timezone, time, icon, place);
       const theme = await setTheme(imageQuery);
       this.view.displayTheme(theme);
     } catch (err) {
@@ -95,8 +94,8 @@ export default class Controller {
   }
 
   handleTime() {
-    const { timezone, language } = this.model;
-    this.view.displayTime(timezone, language);
+    const { loadedData, language } = this.model;
+    this.view.displayTime(loadedData.timezone, language);
   }
 
   async handleMap() {
