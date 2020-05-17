@@ -50,6 +50,10 @@ module.exports = {
     ],
   },
   mode: 'production',
+  devServer: {
+    inline: true,
+    port: 8080,
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'src/index.html',
