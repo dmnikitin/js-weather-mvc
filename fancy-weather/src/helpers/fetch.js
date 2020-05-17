@@ -47,14 +47,23 @@ async function getPlaceFromCoords(latitude, longitude, language) {
   }
 }
 
-async function getMapToken() {
+async function displayMap(latitude, longitude) {
+  /* eslint no-undef: 0 */
   try {
-    const maptoken = await fetch('/map');
-    if (!maptoken) throw new Error(MAP_LOADING_ERROR);
-    return maptoken.json();
+    const response = await fetch('/map');
+    const { MAP_TOKEN } = await response.json();
+    mapboxgl.accessToken = MAP_TOKEN;
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [longitude, latitude],
+      zoom: 9,
+    });
+    map.on('load', () => map.resize());
+    return;
   } catch (err) {
     throw new Error(MAP_LOADING_ERROR);
   }
 }
 
-export { fetchData, getCoordsFromPlace, getPlaceFromCoords, getMapToken };
+export { fetchData, getCoordsFromPlace, getPlaceFromCoords, displayMap };

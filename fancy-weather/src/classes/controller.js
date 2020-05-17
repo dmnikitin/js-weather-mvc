@@ -1,5 +1,5 @@
 import { createElements, getProperImageQuery, getInitialCoordinates, deleteChild } from '../helpers/other';
-import { getCoordsFromPlace } from '../helpers/fetch';
+import { getCoordsFromPlace, displayMap } from '../helpers/fetch';
 import { errors } from '../assets/data';
 
 export default class Controller {
@@ -56,14 +56,16 @@ export default class Controller {
 
   async handleData(requiredPlace) {
     try {
-      this.displayReloadButton(false);
+      const { displayData, displayGeoData, displayTime } = this.view;
       const { setWeather, setGeoData, language, temperature } = this.model;
+      this.displayReloadButton(false);
       const { latitude, longitude } = await this.getPlaceCoordinates(requiredPlace);
       const loadedData = await setWeather(latitude, longitude);
       const place = await setGeoData(latitude, longitude, language);
       this.displayReloadButton(true);
-      this.view.displayData(loadedData, language, temperature, place);
-      this.view.displayTime(loadedData.timezone, language);
+      displayData(loadedData, language, temperature, place);
+      displayTime(loadedData.timezone, language);
+      displayGeoData(loadedData, language);
     } catch (err) {
       this.view.displayError(err.message);
       throw new Error(err.message);
@@ -99,8 +101,8 @@ export default class Controller {
   }
 
   async handleMap() {
-    const { loadedData, language } = this.model;
-    await this.view.displayMap(loadedData, language);
+    const { loadedData: { latitude, longitude } } = this.model;
+    await displayMap(latitude, longitude);
   }
 
   handleVoiceSearch() {

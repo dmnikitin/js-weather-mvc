@@ -12,6 +12,11 @@ export default class View {
     this.dayPanel = new WeatherDayPanel();
     this.weekPanel = new WeatherWeekPanel();
     this.geoPanel = new GeoPanel();
+    this.displayError = this.displayError.bind(this);
+    this.displayData = this.displayData.bind(this);
+    this.displayTime = this.displayTime.bind(this);
+    this.displayGeoData = this.displayGeoData.bind(this);
+    this.displayTheme = this.displayTheme.bind(this);
     const [container, mainbox] = createElements({
       element: 'main',
       classes: ['container'],
@@ -48,15 +53,6 @@ export default class View {
     }
   }
 
-  displayTheme(theme) {
-    this.mainbox.style.backgroundImage = `linear-gradient(rgba(63, 69, 81, 0.6), rgba(63, 69, 81, 0.6)), url(${theme})`;
-  }
-
-  displayTime(timezone, language) {
-    const { time, dateLong } = getCurrentTime(timezone, language);
-    this.dayPanel.displayTime(time, dateLong);
-  }
-
   displayData(data, language, temperature, place) {
     this.mainbox.append(this.dayPanel.container, this.weekPanel.container, this.geoPanel.container);
     this.dayPanel.displayData(data, language, temperature, place);
@@ -64,8 +60,18 @@ export default class View {
     this.controlPanel.display(language, temperature);
   }
 
-  async displayMap(data, language) {
-    await this.geoPanel.display(data.latitude, data.longitude, language);
+  displayTime(timezone, language) {
+    const { time, dateLong } = getCurrentTime(timezone, language);
+    this.dayPanel.displayTime(time, dateLong);
+  }
+
+  displayGeoData(data, language) {
+    const { latitude, longitude } = data;
+    this.geoPanel.displayGeoData(latitude, longitude, language);
+  }
+
+  displayTheme(theme) {
+    this.mainbox.style.backgroundImage = `linear-gradient(rgba(63, 69, 81, 0.6), rgba(63, 69, 81, 0.6)), url(${theme})`;
   }
 
   bindTemperature(temperatureHandler) {
