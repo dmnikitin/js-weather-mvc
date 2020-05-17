@@ -32,7 +32,7 @@
     "build": "webpack --mode production",
     "lint": "./node_modules/.bin/eslint **/*.js",
     "test": "jest --verbose ./src",
-    "start": "nodemon server.js",
+    "start": "node server.js",
     "heroku-postbuild": "webpack --mode production"
   },
   "keywords": [],
