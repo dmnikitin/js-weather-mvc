@@ -1,0 +1,491 @@
+@import 'normalize.css';
+$button-height: 30px;
+$color-white: #ffff;
+$color-light: #878D8B;
+$color-dark: rgba(63, 69, 81, 0.6);
+$border: 1px solid $color-white;
+
+body {
+  color: $color-white;
+  background-color: $color-light;
+  font-family: "Arsenal";
+  text-align: center;
+}
+
+.container {
+  width: 70%;
+  max-width: 1000px;
+  margin: 5% auto;
+  border-top: $border;
+  border-radius: 15px;
+  background-color: $color-white;
+  font-size: 18px;
+  text-align: justify;
+
+  @media (max-width:550px) {
+    width: 95%;
+  }
+}
+
+.mainbox {
+  display: grid;
+  grid-template-rows: 2fr 1fr 2fr;
+  height: 700px;
+  padding: 25px;
+  background-color: $color-dark;
+  gap: 20px;
+  z-index: 100;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: $border;
+  border-radius: 0 0 15px 15px;
+
+
+
+  @media (min-width: 320px) and (max-width: 550px) {
+    padding: 0;
+  }
+}
+
+.day-container {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  padding-top: 5px;
+
+  @media (min-width: 320px) and (max-width: 550px) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__canvas {
+    @media (min-width: 320px) and (max-width: 550px) {
+      height: 100px;
+      width: 100px;
+    }
+  }
+
+  &__text-wrapper {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding-top: 10px;
+
+    h3,
+    h4 {
+      margin: 0;
+    }
+
+    @media (min-width: 320px) and (max-width: 550px) {
+      justify-content: normal;
+      align-items: center;
+      height: 100px;
+    }
+  }
+
+  &__text-instance {
+
+    &-h3 {
+      font-size: 20px;
+    }
+
+    &-h4 {
+      font-size: 15px;
+    }
+
+    @media (min-width: 320px) and (max-width: 550px) {
+      &-h3 {
+        font-size: 15px;
+      }
+
+      &-h4 {
+        font-size: 13px;
+      }
+    }
+  }
+}
+
+#mainWeatherIcon {
+  margin: 0 auto;
+}
+
+.week-container {
+  display: flex;
+  justify-content: space-around;
+  max-height: 24vh;
+}
+
+.weekday-container {
+  text-align: center;
+
+  &__canvas {
+    height: 50px;
+  }
+
+  &__text-wrapper {
+    padding-top: 10px;
+    padding-left: 10px;
+  }
+
+  &__text-instance {
+    font-size: 15px;
+    margin: 0;
+
+    @media (min-width: 320px) and (max-width: 550px) {
+      font-size: 10px;
+    }
+  }
+}
+
+.map-container {
+  display: grid;
+  grid-template-rows: 80% 20%;
+  gap: 2%;
+
+  @media (min-width: 1000px) {
+    margin: 0 5vw;
+  }
+}
+
+.map-wrapper {
+  width: 100%;
+}
+
+.map-text-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.map-text-instance {
+  font-size: 20px;
+
+  @media (min-width: 320px) and (max-width: 550px) {
+    font-size: 10px;
+    margin: 0;
+    text-align: center;
+  }
+}
+
+.control-container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  height: 35px;
+  padding: 25px 20px;
+  border: $border;
+  border-radius: 15px 15px 0 0;
+  font-size: 16px;
+
+  @media (min-width: 320px) and (max-width: 550px) {
+    height: 67px;
+  }
+
+  &__button {
+    grid-area: theme;
+    width: 35px;
+    height: 30px;
+    border: 2px solid $color-dark;
+    border-radius: 15px;
+    background: $color-white;
+    color: $color-dark;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 1s ease;
+
+    &:hover {
+      color: $color-white;
+      background: $color-dark;
+      cursor: pointer;
+    }
+  }
+}
+
+.query-form {
+  margin-top: -2px;
+  position: relative;
+  width: 36vw;
+
+  @media (min-width: 320px) and (max-width: 550px) {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  @media (min-width: 550px) and (max-width: 800px) {
+    width: 47%;
+  }
+
+  &__text {
+    border: 2px solid $color-dark;
+    border-radius: 10px;
+    position: relative;
+    top:2px;
+    height: 28px;
+    width: 100%;
+
+    &::placeholder {
+      position: relative;
+      bottom: 1px;
+      padding-left: 10px;
+    }
+  }
+
+  button,
+  span {
+    background: transparent;
+    position: absolute;
+    top: 7px;
+    padding: 0;
+    border: none;
+    color: $color-dark;
+    &:hover{
+      color:black;
+      background: transparent;
+    }
+  }
+
+  &__mic {
+    right: 9%;
+    @media (min-width: 550px) and (max-width: 800px) {
+      right: 13%;
+    }
+  }
+
+  &__submit {
+    right: 2%;
+  }
+}
+
+.select {
+  position: relative;
+  height: $button-height;
+  width: 110px;
+  border: 2px solid $color-dark;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  cursor: pointer;
+  font-size: 20px;
+  text-transform: uppercase;
+
+  @media (max-width: 450px) {
+    width: 95px;
+  }
+
+  @media (min-width: 450px) and (max-width: 710px) {
+    width: 70px;
+  }
+
+  &-button {
+    border-color: transparent;
+    background-color: inherit;
+    height: $button-height;
+    padding-bottom: 3px;
+    line-height: 18px;
+
+    @media (max-width: 710px) {
+      font-size: 13px;
+      padding: 0;
+    }
+
+    &:first-child {
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
+
+    &:last-child {
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+  }
+}
+
+.query-form__mic,
+button {
+  transition: background-color 1s linear;
+  background-color: $color-white;
+  color: $color-light;
+  &:hover {
+    background-color: $color-light;
+    color: $color-white;
+    cursor: pointer;
+  }
+}
+
+.query-form__mic::before,
+button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0;
+  -webkit-transform: scale3d(0.7, 1, 1);
+  transform: scale3d(0.7, 1, 1);
+  -webkit-transition: -webkit-transform 0.4s, opacity 0.4s;
+  transition: transform 0.4s, opacity 0.4s;
+  -webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+  transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.onoffswitch {
+  position: relative;
+  width: 60px;
+  height: $button-height;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.onoffswitch-checkbox {
+  display: none;
+}
+
+.onoffswitch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid $color-light;
+  border-radius: 20px;
+  height: $button-height;
+  height: 30px;
+}
+
+.onoffswitch-inner {
+  display: block;
+  width: 200%;
+  margin-left: -100%;
+  transition: margin 2s ease-in 0.2s;
+}
+
+.onoffswitch-inner:before,
+.onoffswitch-inner:after {
+  display: block;
+  float: left;
+  width: 50%;
+  height: 30px;
+  padding: 0;
+  line-height: $button-height;
+  font-size: 10px;
+  color: $color-white;
+  font-family: Trebuchet, Arial, sans-serif;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+
+.onoffswitch-inner:before {
+  content: "C";
+  padding-left: 6px;
+  background-color: $color-white;
+  color: $color-light;
+}
+
+.onoffswitch-inner:after {
+  content: "F";
+  padding-right: 6px;
+  background-color: $color-light;
+  text-align: right;
+}
+
+.onoffswitch-switch {
+  display: block;
+  width: 22px;
+  height: 22px;
+  margin: 4px;
+  background: $color-white;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 26px;
+  border: 2px solid $color-light;
+  border-radius: 50%;
+
+  &:hover {
+    animation: button-back-pulse 2s linear infinite;
+  }
+}
+
+.onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-inner {
+  margin-left: 0;
+}
+
+.onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
+  right: 0;
+  background: $color-light;
+}
+
+.button-focus {
+  background: $color-light;
+  color: $color-white;
+  &:hover{
+    color: $color-white;
+  }
+}
+
+.data-loading {
+  position: absolute;
+  top: 18%;
+  left: 38%;
+  width: 100px;
+  height: 100px;
+  font-size: 3em;
+  text-align: center;
+}
+
+.rotate {
+  font-size: 80px;
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  animation: rotate 3s linear infinite;
+}
+
+@keyframes button-back-pulse {
+  25% {
+    background-color: $color-dark;
+    transform: translateX(-20%) rotate(5deg);
+  }
+
+  50% {
+    background-color: $color-white;
+    transform: translateX(20%) rotate(-5deg);
+  }
+
+  50% {
+    background-color: $color-dark;
+    transform: translateX(20%) rotate(-5deg);
+  }
+
+  100% {
+    background-color: $color-white;
+    transform: translateX(-20%) rotate(5deg);
+  }
+}
+
+@keyframes rotate {
+  25% {
+    color: $color-light;
+    transform: rotate(90deg);
+  }
+
+  50% {
+    color: $color-dark;
+    transform: rotate(180deg);
+  }
+
+  75% {
+    color: $color-light;
+    transform: rotate(270deg);
+  }
+
+  100% {
+    color: $color-dark;
+    transform: rotate(360deg);
+  }
+}
