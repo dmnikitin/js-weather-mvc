@@ -1,6 +1,6 @@
 import Skycons from 'skycons-modern';
 import { createElements, toCelcius, formatDate } from '../../helpers/other';
-import { temperatureValues, formatWeekDays } from '../../assets/data';
+import { temperatureValues } from '../../assets/data';
 
 export default class WeatherWeekPanel {
   constructor() {
@@ -10,7 +10,7 @@ export default class WeatherWeekPanel {
     });
     const nextDays = Array.from({
       length: 3,
-    }, (value, index) => index + 2);
+    }, (value, index) => index + 1);
     const canvasData = { canvasHeight: 50, canvasWidth: 50 };
     this.container = container;
     nextDays.forEach((day) => {
@@ -47,7 +47,7 @@ export default class WeatherWeekPanel {
       const dailyTemp = json.daily.data[value];
       const average = (dailyTemp.temperatureHigh + dailyTemp.temperatureLow) / 2;
       const temperatureString = temperatureSystem === temperatureValues.celsius ? `${toCelcius(average).toFixed(0)} °C` : `${average.toFixed(0)} °F`;
-      day.textContent = formatDate(dailyTemp.time, language, formatWeekDays.shortName);
+      day.textContent = formatDate(dailyTemp.time, json.timezone, language);
       dayTemperature.textContent = temperatureString;
       skycons.add(`${canvas.getAttribute('id')}`, dailyTemp.icon);
     });

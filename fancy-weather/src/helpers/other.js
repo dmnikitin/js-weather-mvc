@@ -22,11 +22,13 @@ const createElements = (...args) => args.map((e) => {
 
 const toCelcius = (val) => ((val - 32) * 5) / 9;
 
-const formatDate = (time, language, format) => {
+const formatDate = (time, timeZone, language) => {
   const dt = new Date(time * 1000);
-  const day = dt.getDate() - 1;
+  const wd = new Date(time * 1000).toLocaleString('en-GB', { timeZone, weekday: 'long' });
+  const day = dt.getDate();
   const month = dt.getMonth();
-  const weekDay = translations.weekday[format][language][dt.getUTCDay()];
+  const wdIndex = translations.weekday.all.findIndex((el) => el === wd);
+  const weekDay = translations.weekday[formatWeekDays.shortName][language][wdIndex];
   const monthArray = translations.month[language];
   return `${monthArray[month]}, ${day}, ${weekDay}`;
 };
@@ -44,11 +46,12 @@ const getCurrentTime = (timeZone, language) => {
   return { time, dateLong };
 };
 
-const getProperImageQuery = (time, weather, place) => {
-  const dt = new Date(time * 1000);
-  const month = dt.getMonth();
-  const hour = dt.getHours();
-  return `${translations.seasons[month]} ${translations.dayParts[Math.floor(hour / 6)]} ${weather} ${place}`;
+const getProperImageQuery = (timeZone, time, weather, place) => {
+  const dt = new Date(time * 1000).toLocaleString('en-GB', { timeZone });
+  const [dtShort, timeShort] = dt.split(' ');
+  const month = dtShort.split('/')[1];
+  const hour = timeShort.substring(0, timeShort.length - 6);
+  return `${translations.seasons[parseInt(month, 10) - 1]} ${translations.dayParts[Math.floor(hour / 6)]} ${weather} ${place}`;
 };
 
 const deleteChild = (element) => {
