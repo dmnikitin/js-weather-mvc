@@ -25,7 +25,7 @@ async function fetchData(url, requestBody) {
 async function getCoordsFromPlace(place, language) {
   try {
     const requestBody = { place, language };
-    const data = await fetchData('http://localhost:8080/place', requestBody);
+    const data = await fetchData('/place', requestBody);
     if (!data) throw new Error(GEODATA_LOADING_ERROR);
     const { geometry: { lat: latitude, lng: longitude } } = data.results[0];
     return ({ coords: { latitude, longitude } });
@@ -38,7 +38,7 @@ async function getCoordsFromPlace(place, language) {
 async function getPlaceFromCoords(latitude, longitude, language) {
   try {
     const requestBody = { place: `${latitude},${longitude}`, language };
-    const data = await fetchData('http://localhost:8080/place', requestBody);
+    const data = await fetchData('/place', requestBody);
     if (!data) throw new Error(GEODATA_LOADING_ERROR);
     const { city, country } = data.results[0].components;
     return `${city}, ${country}`;
@@ -49,7 +49,7 @@ async function getPlaceFromCoords(latitude, longitude, language) {
 
 async function getMapToken() {
   try {
-    const maptoken = await fetch('http://localhost:8080/map');
+    const maptoken = await fetch('/map');
     if (!maptoken) throw new Error(MAP_LOADING_ERROR);
     return maptoken.json();
   } catch (err) {
