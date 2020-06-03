@@ -19,7 +19,7 @@
 
 (function () {
   const	geolocation = {};
-
+  console.log('geolocation api working');
   geolocation.init = function () {
     try {
       // Check for W3C Geolocation API standard support
@@ -50,6 +50,7 @@
       }
     }
   };
+  console.log("geolocation", geolocation)
 
   /**
 	 * Gets the current position of the user and executes a callback function
