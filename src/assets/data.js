@@ -92,7 +92,7 @@ const translations = {
     10: 'fall',
     11: 'winter',
   },
-  dayParts: ['night', 'morning', 'day', 'dusk'],
+  dayParts: ['night', 'morning', 'afternoon', 'dusk'],
 };
 
 const errors = {
