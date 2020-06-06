@@ -28,11 +28,12 @@
     }
   },
   "scripts": {
-    "start": "webpack-dev-server --open",
+    "dev": "webpack-dev-server --open",
     "build": "webpack --mode production",
     "lint": "./node_modules/.bin/eslint **/*.js",
     "test": "jest --verbose ./src",
-    "go": "nodemon server.js"
+    "start": "node server.js",
+    "heroku-postbuild": "webpack --mode production"
   },
   "keywords": [],
   "author": "",
@@ -73,7 +74,9 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "http-status-codes": "^1.4.0",
     "node-fetch": "^2.6.0",
-    "skycons-modern": "^1.0.0"
+    "skycons-modern": "^1.0.0",
+    "winston": "^3.2.1"
   }
 }
