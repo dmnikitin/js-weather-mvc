@@ -51,7 +51,7 @@ const getProperImageQuery = (timeZone, time, weather) => {
   const [dtShort, timeShort] = dt.split(' ');
   const month = dtShort.split('/')[1];
   const hour = timeShort.substring(0, timeShort.length - 6);
-  return `${translations.dayParts[Math.floor(hour / 6)]} ${translations.seasons[parseInt(month, 10) - 1]} ${weather}`;
+  return `${weather} ${translations.dayParts[Math.floor(hour / 6)]} ${translations.seasons[parseInt(month, 10) - 1]}`;
 };
 
 const deleteChild = (element) => {
